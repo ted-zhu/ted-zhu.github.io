@@ -30,4 +30,4 @@ kubectl apply -f https://github.com/kubesphere/ks-installer/releases/download/v3
 kubectl logs -n kubesphere-system $(kubectl get pod -n kubesphere-system -l app=ks-install -o jsonpath='{.items[0].metadata.name}') -f
 ```
 
-![image-20211230153228588](/Users/crosherezhu/Library/Application Support/typora-user-images/image-20211230153228588.png)
+![image-20211230153228588](https://tva1.sinaimg.cn/large/008i3skNgy1gybw5r3hfcj30cu0fa0u5.jpg)
