@@ -4,11 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Grafana集中監控阿里雲資源, Ted tech">
-    <meta name="description" content="Grafana集中監控阿里雲資源背景
-目前幫很多客戶在託管並運維阿里雲上的相關資源，在此基礎上，需要監控上面所有產品的狀態及一些Security的事件。
-需求
-在公司的運維團隊當中，可以通過大屏第一時間看到相關客戶的重點產品的狀態或圖，並且">
+    <meta name="keywords" content="# 阿里雲APIGateway對接本地API接口, Ted tech">
+    <meta name="description" content="阿里雲APIGateway對接本地API接口背景客戶希望加強API的安全.
+需求客戶希望把對外的接口使用雲上API網關，對內API接口使用本地IDC 網關，從而區分對外接口走外面網關，對內接口走內部網關，並使用雲上WAF的API保護功能，還">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -20,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Grafana集中監控阿里雲資源 | Ted tech</title>
+    <title># 阿里雲APIGateway對接本地API接口 | Ted tech</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -337,12 +335,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Grafana集中監控阿里雲資源</h1>
+                    <h1 class="description center-align post-title"># 阿里雲APIGateway對接本地API接口</h1>
                 </div>
             </div>
         </div>
@@ -399,34 +397,30 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Grafana集中監控阿里雲資源"><a href="#Grafana集中監控阿里雲資源" class="headerlink" title="Grafana集中監控阿里雲資源"></a>Grafana集中監控阿里雲資源</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><hr>
-<p>目前幫很多客戶在託管並運維阿里雲上的相關資源，在此基礎上，需要監控上面所有產品的狀態及一些Security的事件。</p>
-<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><hr>
-<p>在公司的運維團隊當中，可以通過大屏第一時間看到相關客戶的重點產品的狀態或圖，並且當出現異常情況下，可以通過各種可用方式進行告警通知</p>
-<h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2><hr>
-<p>在尋找方案中，挑選不同類型產品以滿足公司內部需求。</p>
+                <h1 id="阿里雲APIGateway對接本地API接口"><a href="#阿里雲APIGateway對接本地API接口" class="headerlink" title="阿里雲APIGateway對接本地API接口"></a>阿里雲APIGateway對接本地API接口</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>客戶希望加強API的安全.</p>
+<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>客戶希望把對外的接口使用雲上API網關，對內API接口使用本地IDC 網關，從而區分對外接口走外面網關，對內接口走內部網關，並使用雲上WAF的API保護功能，還有希望雲上可以抵擋Anti-DDoS的流量</p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>客戶使用阿里雲API Gateway的話, 實現需求方面有部分問題:</p>
 <ol>
-<li>阿里雲雲監控</li>
-<li>雲運維平台SAAS版</li>
-<li>Grafana + 阿里雲Open api監控插件👍</li>
+<li>阿里雲API Gateway官方文檔說不支持接入本地IDC的API</li>
+<li>客戶希望阿里雲上API Gateway對外是非標準接口</li>
+<li>WAF實例不支持非標準接口</li>
 </ol>
-<h2 id="阿里雲雲監控"><a href="#阿里雲雲監控" class="headerlink" title="阿里雲雲監控"></a>阿里雲雲監控</h2><p>由於雲監控是基於每個帳號去配置監控規則，無法做到多個帳號同時顯示，對應監控可以通過钉钉群, 郵件 或 webhook的形式進行告警. 現階段使用的監控告警係基於此方法做，但大量客戶需要整合監控，所以此方案繼續升級.</p>
-<h2 id="雲運維平台SAAS版"><a href="#雲運維平台SAAS版" class="headerlink" title="雲運維平台SAAS版"></a>雲運維平台SAAS版</h2><p>國內這部分平台相對比較成熟，但由於公司所在地有法律法規要求，數據不能離境，假設通過通過國內平台調用阿里雲Open API的話(睿象雲)，有可能會產生數據離境問題，所以此方案都排除。</p>
-<h2 id="Grafana-阿里雲Open-api監控插件👍"><a href="#Grafana-阿里雲Open-api監控插件👍" class="headerlink" title="Grafana + 阿里雲Open api監控插件👍"></a>Grafana + 阿里雲Open api監控插件👍</h2><p>通過本地服務器搭建Grafana，再安裝阿里雲的插件，可以實現對應多帳號多產品的監控</p>
-<p><img src="https://p.ipic.vip/opk0hm.png" alt="image-20241022095524162"></p>
-<p><img src="https://p.ipic.vip/qwqaps.png" alt="img"></p>
-<p><img src="https://p.ipic.vip/992sdp.png" alt="img"></p>
-<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><hr>
-<h3 id="Grafana安裝包"><a href="#Grafana安裝包" class="headerlink" title="Grafana安裝包"></a>Grafana安裝包</h3><p><a target="_blank" rel="noopener" href="https://grafana.com/oss/grafana/">https://grafana.com/oss/grafana/</a></p>
-<h4 id="Grafana安裝教程"><a href="#Grafana安裝教程" class="headerlink" title="Grafana安裝教程"></a>Grafana安裝教程</h4><p><a target="_blank" rel="noopener" href="https://grafana.com/docs/grafana/latest/setup-grafana/installation/">https://grafana.com/docs/grafana/latest/setup-grafana/installation/</a></p>
-<h3 id="aliyun-cms-grafana-2-0-服务端数据源安装使用说明文档"><a href="#aliyun-cms-grafana-2-0-服务端数据源安装使用说明文档" class="headerlink" title="aliyun-cms-grafana 2.0 服务端数据源安装使用说明文档"></a>aliyun-cms-grafana 2.0 服务端数据源安装使用说明文档</h3><h4 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2.0 服务端版本需要 Grafana 版本 7+ </span><br><span class="line">如果是旧版本 Grafana，只能安装 1.0 版本 https://github.com/aliyun/aliyun-cms-grafana/tree/v1.0</span><br></pre></td></tr></table></figure>
-
-<h4 id="1、直接安装云监控grafana数据源"><a href="#1、直接安装云监控grafana数据源" class="headerlink" title="1、直接安装云监控grafana数据源"></a>1、直接安装云监控grafana数据源</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a. 直接 从release 页面 https://github.com/aliyun/aliyun-cms-grafana/releases 里面下载 aliyun_cms_grafana_datasource_v2.0.tar.gz</span><br><span class="line">b. 下载到 grafan的plugin目录中，解压缩 tar -xzf aliyun_cms_grafana_datasource_v2.0.tar.gz</span><br><span class="line">c. 修改 conf/defaults.ini 允许未签名插件运行</span><br><span class="line">    allow_loading_unsigned_plugins = aliyun_cms_grafana_datasource</span><br><span class="line">d. 重启grafana</span><br></pre></td></tr></table></figure>
-
-<h4 id="2、源代码安装"><a href="#2、源代码安装" class="headerlink" title="2、源代码安装"></a>2、源代码安装</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">a. 前端编译</span><br><span class="line">    进入aliyun-cms-grafana目录下,执行grunt命令(需要安装nodejs和npm),则会按照Gruntfile.js里面的配置将项目里面的文件打包到指定的目录,</span><br><span class="line">    当前配置是将项目文件打包到dist目录下,发布的时候打包发布整个插件目录下的文件,dist目录下一定是经源文件编译后的。</span><br><span class="line">b. 服务端编译</span><br><span class="line">需要安装   </span><br><span class="line">    go 1.14   </span><br><span class="line">    mage</span><br><span class="line">    之后在目录中运行 mage -v， 会自动在 dist目录下生成 相应的二进制包。之后跟随前端代码统一发布</span><br><span class="line"></span><br><span class="line">c. 部署</span><br><span class="line">    1）按照上面顺序编译完成后，代码都会到dist下面。包括前端文件和二进制可执行文件 cms-datasource*。</span><br><span class="line">    2）保证 cms-datasource* 都具有可执行权限。chmod +x cms-datasource*</span><br><span class="line">    3) 在grafana 的plugin目录中，创建 aliyun_cms_grafana_datasource 目录，把编译出来的dist目录拷贝到此</span><br><span class="line">    4) 修改 conf/defaults.ini 允许未签名插件运行</span><br><span class="line">        allow_loading_unsigned_plugins = aliyun_cms_grafana_datasource</span><br><span class="line">    5) 重启grafana</span><br></pre></td></tr></table></figure>
-
-<h4 id="3、配置云监控grafana数据源"><a href="#3、配置云监控grafana数据源" class="headerlink" title="3、配置云监控grafana数据源"></a>3、配置云监控grafana数据源</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a.进入grafana的数据源配置页面(Data Sources),点击Add data source进入配置表单页面,填入数据源名称(Name),</span><br><span class="line">    在数据源类型(Type)对应的下拉列表中选择CMS Grafana Service。</span><br><span class="line">b. 配置你的AK 和阿里云ID</span><br><span class="line">    如果显示Success Data source is working,说明数据源配置成功,可以开始在grafana中访问阿里云监控的数据了。</span><br><span class="line">    具体可参考:https://help.aliyun.com/document_detail/109434.html?spm=a2c4g.11186623.6.565.70d048adQpRZsT</span><br></pre></td></tr></table></figure>
-
+<h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2><p>對應的問題，需要逐個分析，看可不可以組成一個整體方案給客戶.</p>
+<p>Q1.阿里雲API Gateway官方文檔不支持接入本地IDC的API</p>
+<p><img src="https://p.ipic.vip/bvdxo5.png" alt="image-20241022105201653"></p>
+<p>A1: 實際上可以通過後台加白名單，直接支持本地IDC的API， 譬如本地API是 <a target="_blank" rel="noopener" href="https://1.1.2.2/api">https://1.1.2.2/api</a> ，是可以加白名單後，直接添加</p>
+<p>Q2: 客戶希望阿里雲上API Gateway對外是非標準接口</p>
+<p>A2: 阿里雲API Gateway實際是不支持的，但經過跟阿里雲研發部門討論，可以使用一種方法去實現，就是ALB + API Gateway.</p>
+<p><img src="https://p.ipic.vip/4hm24d.png" alt="image-20241022105651536"></p>
+<p>通過ALB 指定後端地址為API Gateway的VPC地址，來實現非標準端口，ALB暴露非標端口，再監聽後端API Gateway, 就可以實現。</p>
+<p>Q3: WAF實例不支持非標準接口</p>
+<p>A3: 使用WAF3.0實例進行的話，在之前發版的版本是不支持的，後來跟研發部門提了需求後，後續版本更改了，但在那時，通過開啟ALB的WAF防護功能，去實現了非標準端口需求，通過ALB和WAF集成實現</p>
+<p><img src="https://p.ipic.vip/z781wr.png" alt="image-20241022110704125"></p>
+<p>最終實現的方案架構</p>
+<p><img src="https://p.ipic.vip/77uso5.png" alt="image-20241022111531046"></p>
+<p>WAF打開API安全功能, 接著就可以在API安全頁面看到 API資產走勢，風險走勢相關的統計圖</p>
+<p><a target="_blank" rel="noopener" href="https://www.alibabacloud.com/help/zh/waf/web-application-firewall-3-0/user-guide/api-security-1/?spm=a2c63.p38356.0.0.5aa8112eCVEg1f">https://www.alibabacloud.com/help/zh/waf/web-application-firewall-3-0/user-guide/api-security-1/?spm=a2c63.p38356.0.0.5aa8112eCVEg1f</a></p>
+<p><img src="https://p.ipic.vip/0qcgg6.png" alt="image-20241022111849902"></p>
 
                 
             </div>
@@ -453,7 +447,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://ted-zhu.github.io/2024/10/22/Grafana%E9%9B%86%E4%B8%AD%E7%9B%A3%E6%8E%A7%E9%98%BF%E9%87%8C%E9%9B%B2%E8%B3%87%E6%BA%90/">http://ted-zhu.github.io/2024/10/22/Grafana%E9%9B%86%E4%B8%AD%E7%9B%A3%E6%8E%A7%E9%98%BF%E9%87%8C%E9%9B%B2%E8%B3%87%E6%BA%90/</a>
+                    <a href="http://ted-zhu.github.io/2024/10/22/%E9%98%BF%E9%87%8C%E9%9B%B2APIGateway%E5%B0%8D%E6%8E%A5%E6%9C%AC%E5%9C%B0API%E6%8E%A5%E5%8F%A3/">http://ted-zhu.github.io/2024/10/22/%E9%98%BF%E9%87%8C%E9%9B%B2APIGateway%E5%B0%8D%E6%8E%A5%E6%9C%AC%E5%9C%B0API%E6%8E%A5%E5%8F%A3/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -567,9 +561,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2024/10/22/%E9%98%BF%E9%87%8C%E9%9B%B2APIGateway%E5%B0%8D%E6%8E%A5%E6%9C%AC%E5%9C%B0API%E6%8E%A5%E5%8F%A3/">
                     <div class="card-image">
@@ -587,9 +582,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2024-10-22
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-10-22
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -598,6 +593,7 @@
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -608,13 +604,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2024/10/17/Grafana%E7%9B%A3%E6%8E%A7%E9%98%BF%E9%87%8C%E9%9B%B2%E7%9B%B8%E9%97%9C%E8%B3%87%E6%BA%90/">
+                <a href="/2024/10/22/Grafana%E9%9B%86%E4%B8%AD%E7%9B%A3%E6%8E%A7%E9%98%BF%E9%87%8C%E9%9B%B2%E8%B3%87%E6%BA%90/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Grafana監控阿里雲相關資源">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Grafana集中監控阿里雲資源">
                         
-                        <span class="card-title">Grafana監控阿里雲相關資源</span>
+                        <span class="card-title">Grafana集中監控阿里雲資源</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -625,7 +621,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-10-17
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-10-22
                             </span>
                         <span class="publish-author">
                             
