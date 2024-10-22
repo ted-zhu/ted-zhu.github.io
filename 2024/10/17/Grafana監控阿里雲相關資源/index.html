@@ -4,9 +4,11 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Sealos安裝K8s, Ted tech">
-    <meta name="description" content="安装sealossealos是个golang的二进制工具，直接下载拷贝到bin目录即可, release页面也可下载
-12wget -c https://sealyun.oss-cn-beijing.aliyuncs.com/latest/">
+    <meta name="keywords" content="Grafana監控阿里雲相關資源, Ted tech">
+    <meta name="description" content="Grafana監控阿里雲相關資源背景
+目前幫很多客戶在託管並運維阿里雲上的相關資源，在此基礎上，需要監控上面所有產品的狀態及一些Security的事件。
+需求
+在公司的運維團隊當中，可以通過大屏第一時間看到相關客戶的重點產品的狀態或圖，並且">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +20,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Sealos安裝K8s | Ted tech</title>
+    <title>Grafana監控阿里雲相關資源 | Ted tech</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -335,12 +337,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Sealos安裝K8s</h1>
+                    <h1 class="description center-align post-title">Grafana監控阿里雲相關資源</h1>
                 </div>
             </div>
         </div>
@@ -397,18 +399,33 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="安装sealos"><a href="#安装sealos" class="headerlink" title="安装sealos"></a>安装sealos</h1><p>sealos是个golang的二进制工具，直接下载拷贝到bin目录即可, release页面也可下载</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget -c https://sealyun.oss-cn-beijing.aliyuncs.com/latest/sealos &amp;&amp; \</span><br><span class="line">    chmod +x sealos &amp;&amp; mv sealos /usr/bin</span><br></pre></td></tr></table></figure>
+                <h1 id="Grafana監控阿里雲相關資源"><a href="#Grafana監控阿里雲相關資源" class="headerlink" title="Grafana監控阿里雲相關資源"></a>Grafana監控阿里雲相關資源</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><hr>
+<p>目前幫很多客戶在託管並運維阿里雲上的相關資源，在此基礎上，需要監控上面所有產品的狀態及一些Security的事件。</p>
+<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><hr>
+<p>在公司的運維團隊當中，可以通過大屏第一時間看到相關客戶的重點產品的狀態或圖，並且當出現異常情況下，可以通過各種可用方式進行告警通知</p>
+<h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2><hr>
+<p>在尋找方案中，挑選不同類型產品以滿足公司內部需求。</p>
+<ol>
+<li>阿里雲雲監控</li>
+<li>雲運維平台SAAS版</li>
+<li>Grafana + 阿里雲Open api監控插件👍</li>
+</ol>
+<h2 id="阿里雲雲監控"><a href="#阿里雲雲監控" class="headerlink" title="阿里雲雲監控"></a>阿里雲雲監控</h2><p>由於雲監控是基於每個帳號去配置監控規則，無法做到多個帳號同時顯示，對應監控可以通過钉钉群, 郵件 或 webhook的形式進行告警. 現階段使用的監控告警係基於此方法做，但大量客戶需要整合監控，所以此方案繼續升級.</p>
+<h2 id="雲運維平台SAAS版"><a href="#雲運維平台SAAS版" class="headerlink" title="雲運維平台SAAS版"></a>雲運維平台SAAS版</h2><p>國內這部分平台相對比較成熟，但由於公司所在地有法律法規要求，數據不能離境，假設通過通過國內平台調用阿里雲Open API的話(睿象雲)，有可能會產生數據離境問題，所以此方案都排除。</p>
+<h2 id="Grafana-阿里雲Open-api監控插件👍"><a href="#Grafana-阿里雲Open-api監控插件👍" class="headerlink" title="Grafana + 阿里雲Open api監控插件👍"></a>Grafana + 阿里雲Open api監控插件👍</h2><p>通過本地服務器搭建Grafana，再安裝阿里雲的插件，可以實現對應多帳號多產品的監控</p>
+<p><img src="https://p.ipic.vip/opk0hm.png" alt="image-20241022095524162"></p>
+<p><img src="https://p.ipic.vip/qwqaps.png" alt="img"></p>
+<p><img src="https://p.ipic.vip/992sdp.png" alt="img"></p>
+<h2 id="部署"><a href="#部署" class="headerlink" title="部署"></a>部署</h2><hr>
+<h3 id="Grafana安裝包"><a href="#Grafana安裝包" class="headerlink" title="Grafana安裝包"></a>Grafana安裝包</h3><p><a target="_blank" rel="noopener" href="https://grafana.com/oss/grafana/">https://grafana.com/oss/grafana/</a></p>
+<h4 id="Grafana安裝教程"><a href="#Grafana安裝教程" class="headerlink" title="Grafana安裝教程"></a>Grafana安裝教程</h4><p><a target="_blank" rel="noopener" href="https://grafana.com/docs/grafana/latest/setup-grafana/installation/">https://grafana.com/docs/grafana/latest/setup-grafana/installation/</a></p>
+<h3 id="aliyun-cms-grafana-2-0-服务端数据源安装使用说明文档"><a href="#aliyun-cms-grafana-2-0-服务端数据源安装使用说明文档" class="headerlink" title="aliyun-cms-grafana 2.0 服务端数据源安装使用说明文档"></a>aliyun-cms-grafana 2.0 服务端数据源安装使用说明文档</h3><h4 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2.0 服务端版本需要 Grafana 版本 7+ </span><br><span class="line">如果是旧版本 Grafana，只能安装 1.0 版本 https://github.com/aliyun/aliyun-cms-grafana/tree/v1.0</span><br></pre></td></tr></table></figure>
 
-<h1 id="下载K8S离线资源包"><a href="#下载K8S离线资源包" class="headerlink" title="下载K8S离线资源包"></a>下载K8S离线资源包</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -c https://sealyun.oss-cn-beijing.aliyuncs.com/05a3db657821277f5f3b92d834bbaf98-v1.22.0/kube1.22.0.tar.gz</span><br></pre></td></tr></table></figure>
+<h4 id="1、直接安装云监控grafana数据源"><a href="#1、直接安装云监控grafana数据源" class="headerlink" title="1、直接安装云监控grafana数据源"></a>1、直接安装云监控grafana数据源</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a. 直接 从release 页面 https://github.com/aliyun/aliyun-cms-grafana/releases 里面下载 aliyun_cms_grafana_datasource_v2.0.tar.gz</span><br><span class="line">b. 下载到 grafan的plugin目录中，解压缩 tar -xzf aliyun_cms_grafana_datasource_v2.0.tar.gz</span><br><span class="line">c. 修改 conf/defaults.ini 允许未签名插件运行</span><br><span class="line">    allow_loading_unsigned_plugins = aliyun_cms_grafana_datasource</span><br><span class="line">d. 重启grafana</span><br></pre></td></tr></table></figure>
 
-<h1 id="安裝集群"><a href="#安裝集群" class="headerlink" title="安裝集群"></a>安裝集群</h1><p>安装一个三master和兩個node的kubernetes集群</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sealos init --passwd &#x27;1111&#x27; \</span><br><span class="line">	--master 192.168.8.34  --master 192.168.8.35  --master 192.168.8.36  \</span><br><span class="line">	--node 192.168.8.37 --node 192.168.8.38 \</span><br><span class="line">	--pkg-url /root/kube1.22.0.tar.gz \</span><br><span class="line">	--version v1.22.0</span><br></pre></td></tr></table></figure>
+<h4 id="2、源代码安装"><a href="#2、源代码安装" class="headerlink" title="2、源代码安装"></a>2、源代码安装</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">a. 前端编译</span><br><span class="line">    进入aliyun-cms-grafana目录下,执行grunt命令(需要安装nodejs和npm),则会按照Gruntfile.js里面的配置将项目里面的文件打包到指定的目录,</span><br><span class="line">    当前配置是将项目文件打包到dist目录下,发布的时候打包发布整个插件目录下的文件,dist目录下一定是经源文件编译后的。</span><br><span class="line">b. 服务端编译</span><br><span class="line">需要安装   </span><br><span class="line">    go 1.14   </span><br><span class="line">    mage</span><br><span class="line">    之后在目录中运行 mage -v， 会自动在 dist目录下生成 相应的二进制包。之后跟随前端代码统一发布</span><br><span class="line"></span><br><span class="line">c. 部署</span><br><span class="line">    1）按照上面顺序编译完成后，代码都会到dist下面。包括前端文件和二进制可执行文件 cms-datasource*。</span><br><span class="line">    2）保证 cms-datasource* 都具有可执行权限。chmod +x cms-datasource*</span><br><span class="line">    3) 在grafana 的plugin目录中，创建 aliyun_cms_grafana_datasource 目录，把编译出来的dist目录拷贝到此</span><br><span class="line">    4) 修改 conf/defaults.ini 允许未签名插件运行</span><br><span class="line">        allow_loading_unsigned_plugins = aliyun_cms_grafana_datasource</span><br><span class="line">    5) 重启grafana</span><br></pre></td></tr></table></figure>
 
-<h1 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ubernetes/pki/front-proxy-client.crt] total size is: 1.08KB ;speed is 1KB</span><br><span class="line">15:19:01 [DEBG] [scp.go:352] [ssh][192.168.8.34:22]transfer local [/root/.sealos/pki/front-proxy-client.key] to Dst [/etc/kubernetes/pki/front-proxy-client.key] total size is: 1.64KB ;speed is 1KB</span><br><span class="line">15:19:02 [DEBG] [scp.go:352] [ssh][192.168.8.34:22]transfer local [/root/.sealos/pki/sa.key] to Dst [/etc/kubernetes/pki/sa.key] total size is: 1.64KB ;speed is 1KB</span><br><span class="line">15:19:02 [DEBG] [scp.go:352] [ssh][192.168.8.34:22]transfer local [/root/.sealos/pki/sa.pub] to Dst [/etc/kubernetes/pki/sa.pub] total size is: 0.44KB ;speed is 0KB</span><br><span class="line">15:19:02 [DEBG] [ssh.go:72] [192.168.8.34:22] grep -qF &#x27;192.168.8.34 apiserver.cluster.local&#x27; /etc/hosts || echo 192.168.8.34 apiserver.cluster.local &gt;&gt; /etc/hosts</span><br><span class="line">15:19:03 [INFO] [ssh.go:27] [ssh][192.168.8.34:22] kubeadm init --config=/root/kubeadm-config.yaml --upload-certs -v 0</span><br><span class="line">15:19:04 [DEBG] [ssh.go:39] [ssh][192.168.8.34:22]command result is: [init] Using Kubernetes version: v1.22.0</span><br><span class="line">[preflight] Running pre-flight checks</span><br><span class="line">	[WARNING FileExisting-socat]: socat not found in system path</span><br><span class="line">error execution phase preflight: [preflight] Some fatal errors occurred:</span><br><span class="line">	[ERROR CRI]: container runtime is not running: output: time=&quot;2022-01-05T15:19:03+08:00&quot; level=fatal msg=&quot;getting status of runtime: rpc error: code = Unimplemented desc = unknown service runtime.v1alpha2.RuntimeService&quot;</span><br><span class="line">, error: exit status 1</span><br><span class="line">[preflight] If you know what you are doing, you can make a check non-fatal with `--ignore-preflight-errors=...`</span><br><span class="line">To see the stack trace of this error execute with --v=5 or higher</span><br><span class="line"></span><br><span class="line">15:19:04 [EROR] [ssh.go:42] [ssh][192.168.8.34:22]Error exec command failed: Process exited with status 1</span><br><span class="line">15:19:04 [EROR] [init.go:204] [192.168.8.34:22] install kubernetes failed. please clean and uninstall.</span><br></pre></td></tr></table></figure>
-
-<p>由于K8S大于1.21后，sealos默认安装containerd 而不再装docker，假如默认有了docker后，需要删除docker再安装</p>
-
+<h4 id="3、配置云监控grafana数据源"><a href="#3、配置云监控grafana数据源" class="headerlink" title="3、配置云监控grafana数据源"></a>3、配置云监控grafana数据源</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a.进入grafana的数据源配置页面(Data Sources),点击Add data source进入配置表单页面,填入数据源名称(Name),</span><br><span class="line">    在数据源类型(Type)对应的下拉列表中选择CMS Grafana Service。</span><br><span class="line">b. 配置你的AK 和阿里云ID</span><br><span class="line">    如果显示Success Data source is working,说明数据源配置成功,可以开始在grafana中访问阿里云监控的数据了。</span><br><span class="line">    具体可参考:https://help.aliyun.com/document_detail/109434.html?spm=a2c4g.11186623.6.565.70d048adQpRZsT</span><br></pre></td></tr></table></figure>
                 
             </div>
             <hr/>
@@ -434,7 +451,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://ted-zhu.github.io/2024/10/17/Sealos%E5%AE%89%E8%A3%9DK8s/">http://ted-zhu.github.io/2024/10/17/Sealos%E5%AE%89%E8%A3%9DK8s/</a>
+                    <a href="http://ted-zhu.github.io/2024/10/17/Grafana%E7%9B%A3%E6%8E%A7%E9%98%BF%E9%87%8C%E9%9B%B2%E7%9B%B8%E9%97%9C%E8%B3%87%E6%BA%90/">http://ted-zhu.github.io/2024/10/17/Grafana%E7%9B%A3%E6%8E%A7%E9%98%BF%E9%87%8C%E9%9B%B2%E7%9B%B8%E9%97%9C%E8%B3%87%E6%BA%90/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -548,9 +565,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2024/10/17/Grafana%E7%9B%A3%E6%8E%A7%E9%98%BF%E9%87%8C%E9%9B%B2%E7%9B%B8%E9%97%9C%E8%B3%87%E6%BA%90/">
                     <div class="card-image">
@@ -568,9 +586,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2024-10-17
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-10-17
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -579,6 +597,7 @@
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -589,13 +608,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2024/10/17/KubeSphere%E5%AE%89%E8%A3%9D/">
+                <a href="/2024/10/17/Sealos%E5%AE%89%E8%A3%9DK8s/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="KubeSphere安裝">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Sealos安裝K8s">
                         
-                        <span class="card-title">KubeSphere安裝</span>
+                        <span class="card-title">Sealos安裝K8s</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
