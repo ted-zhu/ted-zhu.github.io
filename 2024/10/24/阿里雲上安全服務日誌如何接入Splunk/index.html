@@ -4,9 +4,12 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Sealos安裝K8s, Ted tech">
-    <meta name="description" content="安装sealossealos是个golang的二进制工具，直接下载拷贝到bin目录即可, release页面也可下载
-12wget -c https://sealyun.oss-cn-beijing.aliyuncs.com/latest/">
+    <meta name="keywords" content="阿里雲上安全服務日誌如何接入Splunk, Ted tech">
+    <meta name="description" content="阿里雲上安全服務日誌如何接入Splunk背景客戶本地正在使用Splunk做SOC, 希望阿里雲雲上安全日誌同時接入Splunk
+需求阿里雲日誌服務上的日誌投遞到Splunk
+方案阿里雲日誌放到本地Splunk上, 可以有兩種實現方式。
+
+通">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +21,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Sealos安裝K8s | Ted tech</title>
+    <title>阿里雲上安全服務日誌如何接入Splunk | Ted tech</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -335,12 +338,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Sealos安裝K8s</h1>
+                    <h1 class="description center-align post-title">阿里雲上安全服務日誌如何接入Splunk</h1>
                 </div>
             </div>
         </div>
@@ -376,7 +379,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>發布日期:&nbsp;&nbsp;
-                    2024-10-17
+                    2024-10-24
                 </div>
                 
 
@@ -397,17 +400,29 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="安装sealos"><a href="#安装sealos" class="headerlink" title="安装sealos"></a>安装sealos</h1><p>sealos是个golang的二进制工具，直接下载拷贝到bin目录即可, release页面也可下载</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget -c https://sealyun.oss-cn-beijing.aliyuncs.com/latest/sealos &amp;&amp; \</span><br><span class="line">    chmod +x sealos &amp;&amp; mv sealos /usr/bin</span><br></pre></td></tr></table></figure>
+                <h1 id="阿里雲上安全服務日誌如何接入Splunk"><a href="#阿里雲上安全服務日誌如何接入Splunk" class="headerlink" title="阿里雲上安全服務日誌如何接入Splunk"></a>阿里雲上安全服務日誌如何接入Splunk</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>客戶本地正在使用Splunk做SOC, 希望阿里雲雲上安全日誌同時接入Splunk</p>
+<h2 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h2><p>阿里雲日誌服務上的日誌投遞到Splunk</p>
+<h2 id="方案"><a href="#方案" class="headerlink" title="方案"></a>方案</h2><p>阿里雲日誌放到本地Splunk上, 可以有兩種實現方式。</p>
+<ol>
+<li><p>通過Splunk安裝alibaba cloud插件來從日誌服務進行實時日誌消費</p>
+</li>
+<li><p>通過日誌服務把日誌壓縮放到OSS, 從OSS下載到本地, 通過Script來壓縮日誌文件並投遞到Splunk</p>
+</li>
+</ol>
+<h3 id="方案1"><a href="#方案1" class="headerlink" title="方案1"></a>方案1</h3><p><img src="https://p.ipic.vip/k51hmw.png" alt="image-20241024161518403"></p>
+<p>準備好AK, 權限只給到日誌服務相關的RAM account, project name改為日誌服務的project name, logstore name改為日誌服務的logstore name。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;Version&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;Statement&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;Action&quot;: [</span><br><span class="line">        &quot;log:ListShards&quot;,</span><br><span class="line">        &quot;log:GetCursorOrData&quot;,</span><br><span class="line">        &quot;log:GetConsumerGroupCheckPoint&quot;,</span><br><span class="line">        &quot;log:UpdateConsumerGroup&quot;,</span><br><span class="line">        &quot;log:ConsumerGroupHeartBeat&quot;,</span><br><span class="line">        &quot;log:ConsumerGroupUpdateCheckPoint&quot;,</span><br><span class="line">        &quot;log:ListConsumerGroup&quot;,</span><br><span class="line">        &quot;log:CreateConsumerGroup&quot;</span><br><span class="line">      ],</span><br><span class="line">      &quot;Resource&quot;: [</span><br><span class="line">        &quot;acs:log:*:*:project/&lt;Project name&gt;/logstore/&lt;Logstore name&gt;&quot;,</span><br><span class="line">        &quot;acs:log:*:*:project/&lt;Project name&gt;/logstore/&lt;Logstore name&gt;/*&quot;</span><br><span class="line">      ],</span><br><span class="line">      &quot;Effect&quot;: &quot;Allow&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h1 id="下载K8S离线资源包"><a href="#下载K8S离线资源包" class="headerlink" title="下载K8S离线资源包"></a>下载K8S离线资源包</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -c https://sealyun.oss-cn-beijing.aliyuncs.com/05a3db657821277f5f3b92d834bbaf98-v1.22.0/kube1.22.0.tar.gz</span><br></pre></td></tr></table></figure>
-
-<h1 id="安裝集群"><a href="#安裝集群" class="headerlink" title="安裝集群"></a>安裝集群</h1><p>安装一个三master和兩個node的kubernetes集群</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sealos init --passwd &#x27;1111&#x27; \</span><br><span class="line">	--master 192.168.8.34  --master 192.168.8.35  --master 192.168.8.36  \</span><br><span class="line">	--node 192.168.8.37 --node 192.168.8.38 \</span><br><span class="line">	--pkg-url /root/kube1.22.0.tar.gz \</span><br><span class="line">	--version v1.22.0</span><br></pre></td></tr></table></figure>
-
-<h1 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ubernetes/pki/front-proxy-client.crt] total size is: 1.08KB ;speed is 1KB</span><br><span class="line">15:19:01 [DEBG] [scp.go:352] [ssh][192.168.8.34:22]transfer local [/root/.sealos/pki/front-proxy-client.key] to Dst [/etc/kubernetes/pki/front-proxy-client.key] total size is: 1.64KB ;speed is 1KB</span><br><span class="line">15:19:02 [DEBG] [scp.go:352] [ssh][192.168.8.34:22]transfer local [/root/.sealos/pki/sa.key] to Dst [/etc/kubernetes/pki/sa.key] total size is: 1.64KB ;speed is 1KB</span><br><span class="line">15:19:02 [DEBG] [scp.go:352] [ssh][192.168.8.34:22]transfer local [/root/.sealos/pki/sa.pub] to Dst [/etc/kubernetes/pki/sa.pub] total size is: 0.44KB ;speed is 0KB</span><br><span class="line">15:19:02 [DEBG] [ssh.go:72] [192.168.8.34:22] grep -qF &#x27;192.168.8.34 apiserver.cluster.local&#x27; /etc/hosts || echo 192.168.8.34 apiserver.cluster.local &gt;&gt; /etc/hosts</span><br><span class="line">15:19:03 [INFO] [ssh.go:27] [ssh][192.168.8.34:22] kubeadm init --config=/root/kubeadm-config.yaml --upload-certs -v 0</span><br><span class="line">15:19:04 [DEBG] [ssh.go:39] [ssh][192.168.8.34:22]command result is: [init] Using Kubernetes version: v1.22.0</span><br><span class="line">[preflight] Running pre-flight checks</span><br><span class="line">	[WARNING FileExisting-socat]: socat not found in system path</span><br><span class="line">error execution phase preflight: [preflight] Some fatal errors occurred:</span><br><span class="line">	[ERROR CRI]: container runtime is not running: output: time=&quot;2022-01-05T15:19:03+08:00&quot; level=fatal msg=&quot;getting status of runtime: rpc error: code = Unimplemented desc = unknown service runtime.v1alpha2.RuntimeService&quot;</span><br><span class="line">, error: exit status 1</span><br><span class="line">[preflight] If you know what you are doing, you can make a check non-fatal with `--ignore-preflight-errors=...`</span><br><span class="line">To see the stack trace of this error execute with --v=5 or higher</span><br><span class="line"></span><br><span class="line">15:19:04 [EROR] [ssh.go:42] [ssh][192.168.8.34:22]Error exec command failed: Process exited with status 1</span><br><span class="line">15:19:04 [EROR] [init.go:204] [192.168.8.34:22] install kubernetes failed. please clean and uninstall.</span><br></pre></td></tr></table></figure>
-
-<p>由于K8S大于1.21后，sealos默认安装containerd 而不再装docker，假如默认有了docker后，需要删除docker再安装</p>
+<ul>
+<li>在Splunk Web UI頁面中，點擊<strong>Alibaba Cloud Log Service Add-on for Splunk</strong>。</li>
+<li>配置全局帳號，配置AK</li>
+<li>创建Data Input，輸入對應的參數</li>
+</ul>
+<h2 id="方案2"><a href="#方案2" class="headerlink" title="方案2"></a>方案2</h2><p>首先創建日誌服務投遞到OSS, 因為投遞到OSS時對原始數據進行壓縮了, 再把壓縮文件下載到本地, 實際上outbound費用是減少了</p>
+<p><img src="https://p.ipic.vip/rg3q5v.png" alt="image-20241024161016216"></p>
+<p>接著再在本地通過解壓文件，再作為數據源投遞到Splunk即可，可以當作為syslog進行。</p>
+<p>最後通過編寫腳本，從而達到自動化。</p>
+<h2 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h2><p>其實由於在投遞日誌前已進行日誌壓縮放到OSS, 實際outbound traffic所產生的費用更少，但客戶考慮到需要人為配置script，且鏈路較為複製，最後使用方案一，原生Add-on的接入方式，更加穩定</p>
 
                 
             </div>
@@ -434,7 +449,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://ted-zhu.github.io/2024/10/17/Sealos%E5%AE%89%E8%A3%9DK8s/">http://ted-zhu.github.io/2024/10/17/Sealos%E5%AE%89%E8%A3%9DK8s/</a>
+                    <a href="http://ted-zhu.github.io/2024/10/24/%E9%98%BF%E9%87%8C%E9%9B%B2%E4%B8%8A%E5%AE%89%E5%85%A8%E6%9C%8D%E5%8B%99%E6%97%A5%E8%AA%8C%E5%A6%82%E4%BD%95%E6%8E%A5%E5%85%A5Splunk/">http://ted-zhu.github.io/2024/10/24/%E9%98%BF%E9%87%8C%E9%9B%B2%E4%B8%8A%E5%AE%89%E5%85%A8%E6%9C%8D%E5%8B%99%E6%97%A5%E8%AA%8C%E5%A6%82%E4%BD%95%E6%8E%A5%E5%85%A5Splunk/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -548,54 +563,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2024/10/17/Grafana%E7%9B%A3%E6%8E%A7%E9%98%BF%E9%87%8C%E9%9B%B2%E7%9B%B8%E9%97%9C%E8%B3%87%E6%BA%90/">
+                <a href="/2024/10/24/%E9%98%BF%E9%87%8C%E9%9B%B2%E4%B8%8A%E5%AE%89%E5%85%A8%E6%9C%8D%E5%8B%99%E6%97%A5%E8%AA%8C%E5%A6%82%E4%BD%95%E6%8E%A5%E5%85%A5Splunk/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Grafana監控阿里雲相關資源">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="阿里雲上安全服務日誌如何接入Splunk">
                         
-                        <span class="card-title">Grafana監控阿里雲相關資源</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2024-10-17
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            Ted
-                            
-                        </span>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2024/10/17/KubeSphere%E5%AE%89%E8%A3%9D/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="KubeSphere安裝">
-                        
-                        <span class="card-title">KubeSphere安裝</span>
+                        <span class="card-title">阿里雲上安全服務日誌如何接入Splunk</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -606,7 +585,45 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-10-17
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-10-24
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Ted
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2024/10/22/%E9%98%BF%E9%87%8C%E9%9B%B2APIGateway%E5%B0%8D%E6%8E%A5%E6%9C%AC%E5%9C%B0API%E6%8E%A5%E5%8F%A3/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="# 阿里雲APIGateway對接本地API接口">
+                        
+                        <span class="card-title"># 阿里雲APIGateway對接本地API接口</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-10-22
                             </span>
                         <span class="publish-author">
                             
