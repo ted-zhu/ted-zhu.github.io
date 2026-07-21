@@ -1,0 +1,74 @@
+---
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+}
+
+const { headings } = Astro.props;
+// Only show h2 and h3 in TOC
+const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+{
+  tocHeadings.length > 2 && (
+    <nav class="toc-sidebar" aria-label="Table of contents">
+      <div class="toc-title">Contents</div>
+      <ul class="toc-list">
+        {tocHeadings.map((h) => (
+          <li>
+            <a href={`#${h.slug}`} class={`toc-h${h.depth}`}>
+              {h.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
+
+<script>
+  function initScrollSpy() {
+    const tocLinks = document.querySelectorAll('.toc-list a');
+    if (!tocLinks.length) return;
+
+    const headingIds = Array.from(tocLinks).map((a) =>
+      a.getAttribute('href')!.slice(1)
+    );
+    const headingEls = headingIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[];
+
+    if (!headingEls.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const link = document.querySelector(
+            `.toc-list a[href="#${entry.target.id}"]`
+          );
+          if (!link) continue;
+
+          if (entry.isIntersecting) {
+            tocLinks.forEach((l) => l.classList.remove('active'));
+            link.classList.add('active');
+          }
+        }
+      },
+      {
+        rootMargin: '-80px 0px -75% 0px',
+        threshold: 0,
+      }
+    );
+
+    headingEls.forEach((el) => observer.observe(el));
+  }
+
+  // Run on initial load and after Astro navigation
+  initScrollSpy();
+  document.addEventListener('astro:after-swap', initScrollSpy);
+</script>

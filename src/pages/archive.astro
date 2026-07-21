@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getCollection } from 'astro:content';
+import '../styles/global.css';
+
+const allPosts = (await getCollection('posts'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Group by year
+const grouped: Record<string, typeof allPosts> = {};
+for (const post of allPosts) {
+  const year = post.data.date.getFullYear().toString();
+  if (!grouped[year]) grouped[year] = [];
+  grouped[year].push(post);
+}
+
+const years = Object.keys(grouped).sort((a, b) => Number(b) - Number(a));
+
+function formatMonth(date: Date) {
+  return date.toLocaleDateString('zh-Hant', { month: 'short', day: 'numeric' });
+}
+---
+
+<BaseLayout title="Archive | Ted Tech">
+  <Header />
+  <main class="main">
+    <div class="container" style="max-width: var(--w-content)">
+      <div class="page-header">
+        <h1 class="page-title">Archive</h1>
+        <p class="page-desc">{allPosts.length} posts in total</p>
+      </div>
+
+      {years.map((year) => (
+        <>
+          <h2 class="archive-year">{year}</h2>
+          <ul class="archive-list">
+            {grouped[year].map((post) => (
+              <li class="archive-item">
+                <span class="archive-date">{formatMonth(post.data.date)}</span>
+                <span class="archive-item-title">
+                  <a href={`/posts/${post.slug}/`}>{post.data.title}</a>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </>
+      ))}
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

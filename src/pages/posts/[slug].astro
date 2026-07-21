@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import TOC from '../../components/TOC.astro';
+import Tag from '../../components/Tag.astro';
+import { getCollection } from 'astro:content';
+import '../../styles/global.css';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { title, date, updated, tags, categories } = post.data;
+
+const { Content, headings } = await post.render();
+
+const formattedDate = date.toLocaleDateString('zh-Hant', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const formattedUpdate = updated
+  ? updated.toLocaleDateString('zh-Hant', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  : null;
+
+// Get adjacent posts for navigation
+const allPosts = (await getCollection('posts'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
+
+const currentIndex = allPosts.findIndex((p) => p.slug === post.slug);
+const prevPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
+const nextPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+---
+
+<BaseLayout title={`${title} | Ted Tech`} description={post.body.slice(0, 160).replace(/[#*`>\-\[\]()]/g, '').trim()}>
+  <Header />
+  <main class="main">
+    <div class="post-layout">
+      <article>
+        <header class="post-header">
+          <h1 class="post-title">{title}</h1>
+          <div class="post-meta">
+            <time datetime={date.toISOString()}>{formattedDate}</time>
+            {formattedUpdate && (
+              <>
+                <span class="post-meta-sep">·</span>
+                <span>Updated {formattedUpdate}</span>
+              </>
+            )}
+            {categories.length > 0 && (
+              <>
+                <span class="post-meta-sep">·</span>
+                <span>{categories.join(', ')}</span>
+              </>
+            )}
+          </div>
+          {tags.length > 0 && (
+            <div class="post-card-tags" style="margin-top: 0.75rem">
+              {tags.map((tag: string) => (
+                <Tag name={tag} />
+              ))}
+            </div>
+          )}
+        </header>
+
+        <div class="prose">
+          <Content />
+        </div>
+
+        <!-- Post Navigation -->
+        {(prevPost || nextPost) && (
+          <nav class="post-nav">
+            {prevPost ? (
+              <a href={`/posts/${prevPost.slug}/`} class="post-nav-item">
+                <div class="post-nav-label">← Previous</div>
+                <div class="post-nav-title">{prevPost.data.title}</div>
+              </a>
+            ) : (
+              <div />
+            )}
+            {nextPost ? (
+              <a href={`/posts/${nextPost.slug}/`} class="post-nav-item post-nav-next">
+                <div class="post-nav-label">Next →</div>
+                <div class="post-nav-title">{nextPost.data.title}</div>
+              </a>
+            ) : (
+              <div />
+            )}
+          </nav>
+        )}
+      </article>
+
+      <TOC headings={headings} />
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

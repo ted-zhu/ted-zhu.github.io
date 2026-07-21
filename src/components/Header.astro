@@ -1,0 +1,49 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/archive', label: 'Archive' },
+  { href: '/tags', label: 'Tags' },
+];
+---
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="site-logo">Ted Tech</a>
+    <nav class="site-nav">
+      {navLinks.map(({ href, label }) => (
+        <a
+          href={href}
+          class:list={[{ active: currentPath === href || (href !== '/' && currentPath.startsWith(href)) }]}
+        >
+          {label}
+        </a>
+      ))}
+      <button class="theme-toggle" aria-label="Toggle theme">
+        <span class="theme-icon">☀</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector('.theme-toggle');
+  const icon = document.querySelector('.theme-icon');
+
+  function updateIcon() {
+    const theme = document.documentElement.getAttribute('data-theme');
+    if (icon) icon.textContent = theme === 'dark' ? '☾' : '☀';
+  }
+
+  updateIcon();
+
+  btn?.addEventListener('click', () => {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateIcon();
+  });
+</script>

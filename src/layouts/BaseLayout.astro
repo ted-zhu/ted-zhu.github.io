@@ -1,0 +1,42 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Ted Tech',
+  description = 'Technical sharing by Ted',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-Hant" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={Astro.url.href} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Ted Tech RSS"
+      href="/rss.xml"
+    />
+    <title>{title}</title>
+    <script is:inline>
+      (function () {
+        const t =
+          localStorage.getItem('theme') ||
+          (matchMedia('(prefers-color-scheme:dark)').matches
+            ? 'dark'
+            : 'light');
+        document.documentElement.setAttribute('data-theme', t);
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

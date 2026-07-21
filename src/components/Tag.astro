@@ -1,0 +1,13 @@
+---
+interface Props {
+  name: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+
+const { name, size = 'md' } = Astro.props;
+const slug = name.toLowerCase().replace(/\s+/g, '-');
+---
+
+<a href={`/tags/${slug}/`} class={`tag ${size !== 'md' ? `tag-${size}` : ''}`}>
+  {name}
+</a>

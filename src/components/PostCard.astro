@@ -1,0 +1,37 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Tag from './Tag.astro';
+
+interface Props {
+  post: CollectionEntry<'posts'>;
+}
+
+const { post } = Astro.props;
+const { title, date, tags, summary } = post.data;
+
+const formattedDate = date.toLocaleDateString('zh-Hant', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const excerpt =
+  summary || post.body.slice(0, 200).replace(/[#*`>\-\[\]()]/g, '').trim() + '...';
+---
+
+<article class="post-card">
+  <div class="post-card-meta">
+    <time datetime={date.toISOString()}>{formattedDate}</time>
+  </div>
+  <h2 class="post-card-title">
+    <a href={`/posts/${post.slug}/`}>{title}</a>
+  </h2>
+  <p class="post-card-excerpt">{excerpt}</p>
+  {tags.length > 0 && (
+    <div class="post-card-tags">
+      {tags.map((tag: string) => (
+        <Tag name={tag} />
+      ))}
+    </div>
+  )}
+</article>

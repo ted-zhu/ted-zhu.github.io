@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+---
+
+<BaseLayout title="404 | Ted Tech">
+  <Header />
+  <main class="main">
+    <div class="container" style="max-width: var(--w-content)">
+      <div class="empty-state">
+        <div class="empty-state-icon">🔍</div>
+        <h1 style="font-size: 1.5rem; margin-bottom: 0.5rem">Page Not Found</h1>
+        <p style="color: var(--c-text-2); margin-bottom: 1.5rem">
+          The page you are looking for does not exist or has been moved.
+        </p>
+        <a
+          href="/"
+          style="
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: var(--c-accent);
+            color: white;
+            border-radius: var(--r);
+            font-weight: 500;
+          "
+        >
+          Back to Home
+        </a>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
