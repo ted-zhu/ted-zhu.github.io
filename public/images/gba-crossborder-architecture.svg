@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="620" viewBox="0 0 1040 620" font-family="'Heiti TC','Noto Sans SC','Hiragino Sans GB','PingFang TC',sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#555"/>
+    </marker>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#E65100"/>
+    </marker>
+    <linearGradient id="dcGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#eef2f7"/>
+    </linearGradient>
+    <linearGradient id="cloudGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fff8f2"/>
+      <stop offset="100%" stop-color="#ffe9d6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1040" height="620" fill="#f7f9fc"/>
+  <text x="520" y="40" text-anchor="middle" font-size="24" font-weight="700" fill="#1a2b45">粵港澳大灣區跨境雲組網架構</text>
+  <text x="520" y="66" text-anchor="middle" font-size="14" fill="#5a6b85">澳門 IDC + 珠海 IDC ── 雙 Region ── CEN 跨境互聯</text>
+
+  <!-- Alibaba Cloud boundary -->
+  <rect x="330" y="95" width="680" height="440" rx="14" fill="#fffdf9" stroke="#F5A623" stroke-width="2" stroke-dasharray="8 5"/>
+  <text x="670" y="120" text-anchor="middle" font-size="16" font-weight="700" fill="#E65100">阿里雲 Alibaba Cloud</text>
+
+  <!-- ===== Macau side (top row) ===== -->
+  <!-- Macau IDC -->
+  <rect x="40" y="150" width="200" height="120" rx="10" fill="url(#dcGrad)" stroke="#3b6ea5" stroke-width="2"/>
+  <text x="140" y="182" text-anchor="middle" font-size="16" font-weight="700" fill="#1a2b45">澳門本地 IDC</text>
+  <text x="140" y="208" text-anchor="middle" font-size="13" fill="#5a6b85">On-Premises 數據中心</text>
+  <text x="140" y="234" text-anchor="middle" font-size="13" fill="#3b6ea5" font-family="monospace">10.10.0.0/16</text>
+
+  <!-- HK VPC -->
+  <rect x="430" y="140" width="230" height="140" rx="10" fill="url(#cloudGrad)" stroke="#F5A623" stroke-width="2"/>
+  <text x="545" y="172" text-anchor="middle" font-size="16" font-weight="700" fill="#B34700">cn-hongkong VPC</text>
+  <text x="545" y="196" text-anchor="middle" font-size="13" fill="#8a5a2a">香港 Region · 澳門側雲資源</text>
+  <text x="545" y="220" text-anchor="middle" font-size="13" fill="#B34700" font-family="monospace">172.16.0.0/16</text>
+  <rect x="452" y="232" width="86" height="30" rx="5" fill="#fff" stroke="#F5A623"/>
+  <text x="495" y="252" text-anchor="middle" font-size="11" fill="#B34700">RDS / AI</text>
+  <rect x="552" y="232" width="86" height="30" rx="5" fill="#fff" stroke="#F5A623"/>
+  <text x="595" y="252" text-anchor="middle" font-size="11" fill="#B34700">數據分析</text>
+
+  <!-- Transit Router HK -->
+  <rect x="740" y="155" width="180" height="110" rx="10" fill="#eaf3ff" stroke="#3b6ea5" stroke-width="2"/>
+  <text x="830" y="185" text-anchor="middle" font-size="15" font-weight="700" fill="#1a2b45">Transit Router</text>
+  <text x="830" y="207" text-anchor="middle" font-size="13" fill="#5a6b85">cn-hongkong</text>
+  <text x="830" y="233" text-anchor="middle" font-size="12" fill="#3b6ea5">TR 路由樞紐</text>
+
+  <!-- Macau IDC -> HK VPC (VPN) -->
+  <line x1="240" y1="210" x2="428" y2="210" stroke="#555" stroke-width="2.5" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+  <rect x="252" y="182" width="164" height="24" rx="5" fill="#ffffff" stroke="#3b6ea5"/>
+  <text x="334" y="199" text-anchor="middle" font-size="12" fill="#1a2b45" font-weight="600">IPsec VPN 隧道</text>
+  <text x="334" y="228" text-anchor="middle" font-size="11" fill="#888">VPN 網關 + 客戶網關</text>
+
+  <!-- HK VPC -> TR HK -->
+  <line x1="660" y1="210" x2="738" y2="210" stroke="#F5A623" stroke-width="2.5" marker-end="url(#arrowOrange)" marker-start="url(#arrowOrange)"/>
+
+  <!-- ===== Zhuhai side (bottom row) ===== -->
+  <!-- Zhuhai IDC -->
+  <rect x="40" y="400" width="200" height="120" rx="10" fill="url(#dcGrad)" stroke="#3b6ea5" stroke-width="2"/>
+  <text x="140" y="432" text-anchor="middle" font-size="16" font-weight="700" fill="#1a2b45">珠海本地 IDC</text>
+  <text x="140" y="458" text-anchor="middle" font-size="13" fill="#5a6b85">On-Premises 數據中心</text>
+  <text x="140" y="484" text-anchor="middle" font-size="13" fill="#3b6ea5" font-family="monospace">10.20.0.0/16</text>
+
+  <!-- SZ VPC -->
+  <rect x="430" y="390" width="230" height="140" rx="10" fill="url(#cloudGrad)" stroke="#F5A623" stroke-width="2"/>
+  <text x="545" y="422" text-anchor="middle" font-size="16" font-weight="700" fill="#B34700">cn-shenzhen VPC</text>
+  <text x="545" y="446" text-anchor="middle" font-size="13" fill="#8a5a2a">深圳 Region · 珠海側雲資源</text>
+  <text x="545" y="470" text-anchor="middle" font-size="13" fill="#B34700" font-family="monospace">172.17.0.0/16</text>
+  <rect x="452" y="482" width="86" height="30" rx="5" fill="#fff" stroke="#F5A623"/>
+  <text x="495" y="502" text-anchor="middle" font-size="11" fill="#B34700">生產 / 研發</text>
+  <rect x="552" y="482" width="86" height="30" rx="5" fill="#fff" stroke="#F5A623"/>
+  <text x="595" y="502" text-anchor="middle" font-size="11" fill="#B34700">數據庫</text>
+
+  <!-- Transit Router SZ -->
+  <rect x="740" y="405" width="180" height="110" rx="10" fill="#eaf3ff" stroke="#3b6ea5" stroke-width="2"/>
+  <text x="830" y="435" text-anchor="middle" font-size="15" font-weight="700" fill="#1a2b45">Transit Router</text>
+  <text x="830" y="457" text-anchor="middle" font-size="13" fill="#5a6b85">cn-shenzhen</text>
+  <text x="830" y="483" text-anchor="middle" font-size="12" fill="#3b6ea5">TR 路由樞紐</text>
+
+  <!-- Zhuhai IDC -> SZ VPC (VPN) -->
+  <line x1="240" y1="460" x2="428" y2="460" stroke="#555" stroke-width="2.5" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+  <rect x="252" y="432" width="164" height="24" rx="5" fill="#ffffff" stroke="#3b6ea5"/>
+  <text x="334" y="449" text-anchor="middle" font-size="12" fill="#1a2b45" font-weight="600">IPsec VPN 隧道</text>
+  <text x="334" y="478" text-anchor="middle" font-size="11" fill="#888">VPN 網關 + 客戶網關</text>
+
+  <!-- SZ VPC -> TR SZ -->
+  <line x1="660" y1="460" x2="738" y2="460" stroke="#F5A623" stroke-width="2.5" marker-end="url(#arrowOrange)" marker-start="url(#arrowOrange)"/>
+
+  <!-- ===== CEN cross-border link between TRs ===== -->
+  <line x1="830" y1="268" x2="830" y2="402" stroke="#D0021B" stroke-width="4" stroke-dasharray="10 6"/>
+  <polygon points="830,266 821,284 839,284" fill="#D0021B"/>
+  <polygon points="830,404 821,386 839,386" fill="#D0021B"/>
+  <rect x="742" y="305" width="256" height="60" rx="8" fill="#fff" stroke="#D0021B" stroke-width="2"/>
+  <text x="870" y="328" text-anchor="middle" font-size="14" font-weight="700" fill="#D0021B">CEN 跨地域連接</text>
+  <text x="870" y="348" text-anchor="middle" font-size="12" fill="#B34700">跨境帶寬包 · 內地 ↔ 港澳</text>
+
+  <!-- Legend -->
+  <rect x="40" y="555" width="960" height="48" rx="8" fill="#ffffff" stroke="#dde3ec"/>
+  <line x1="60" y1="579" x2="100" y2="579" stroke="#555" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="108" y="584" font-size="12" fill="#3a4a63">IPsec VPN（IDC ↔ 雲）</text>
+  <line x1="300" y1="579" x2="340" y2="579" stroke="#F5A623" stroke-width="2.5" marker-end="url(#arrowOrange)"/>
+  <text x="348" y="584" font-size="12" fill="#3a4a63">VPC 掛載 TR</text>
+  <line x1="470" y1="579" x2="510" y2="579" stroke="#D0021B" stroke-width="4" stroke-dasharray="8 5"/>
+  <text x="518" y="584" font-size="12" fill="#3a4a63">CEN 跨境帶寬包（需跨境資質 · 合規核心）</text>
+</svg>
