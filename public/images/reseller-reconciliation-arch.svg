@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="520" viewBox="0 0 1080 520" font-family="'Heiti TC','Noto Sans SC','Hiragino Sans GB','PingFang TC',sans-serif">
+  <defs>
+    <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#555"/>
+    </marker>
+    <marker id="arB" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#3b6ea5"/>
+    </marker>
+  </defs>
+
+  <rect width="1080" height="520" fill="#f7f9fc"/>
+  <text x="540" y="38" text-anchor="middle" font-size="23" font-weight="700" fill="#1a2b45">Reseller 月度對賬自動化：數據管線與角色分工</text>
+  <text x="540" y="62" text-anchor="middle" font-size="13" fill="#5a6b85">Agency API 自動拉數 → 解析勾稽入庫 → 計算引擎 → 確認鎖定 → Excel 清單</text>
+
+  <!-- ===== pipeline row ===== -->
+  <!-- B1 ACPN -->
+  <rect x="30" y="110" width="184" height="100" rx="10" fill="#ffe9d6" stroke="#F5A623" stroke-width="2"/>
+  <text x="122" y="136" text-anchor="middle" font-size="14" font-weight="700" fill="#B34700">阿里雲 ACPN</text>
+  <text x="122" y="156" text-anchor="middle" font-size="12" fill="#B34700">Agency API</text>
+  <text x="122" y="176" text-anchor="middle" font-size="11" fill="#8a5a2a">GetMonthlyBill</text>
+  <text x="122" y="193" text-anchor="middle" font-size="11" fill="#8a5a2a">SubscriptionBill→OSS</text>
+
+  <!-- B2 ingest -->
+  <rect x="234" y="110" width="184" height="100" rx="10" fill="#eaf3ff" stroke="#3b6ea5" stroke-width="2"/>
+  <text x="326" y="136" text-anchor="middle" font-size="14" font-weight="700" fill="#1a2b45">拉取·解析·校驗入庫</text>
+  <text x="326" y="158" text-anchor="middle" font-size="11" fill="#5a6b85">APScheduler 每月8號起</text>
+  <text x="326" y="176" text-anchor="middle" font-size="11" fill="#5a6b85">勾稽校驗 · 失敗重試</text>
+  <text x="326" y="194" text-anchor="middle" font-size="11" fill="#3b6ea5">SQLite (WAL)</text>
+
+  <!-- B3 engine -->
+  <rect x="438" y="110" width="184" height="100" rx="10" fill="#eaf3ff" stroke="#3b6ea5" stroke-width="2"/>
+  <text x="530" y="136" text-anchor="middle" font-size="14" font-weight="700" fill="#1a2b45">金額計算引擎</text>
+  <text x="530" y="158" text-anchor="middle" font-size="11" fill="#5a6b85">Decimal 全精度</text>
+  <text x="530" y="176" text-anchor="middle" font-size="11" fill="#5a6b85">淨額加成 · 退款抵減</text>
+  <text x="530" y="194" text-anchor="middle" font-size="11" fill="#5a6b85">產品級費率分段</text>
+
+  <!-- B4 list/lock -->
+  <rect x="642" y="110" width="184" height="100" rx="10" fill="#eaf3ff" stroke="#3b6ea5" stroke-width="2"/>
+  <text x="734" y="136" text-anchor="middle" font-size="14" font-weight="700" fill="#1a2b45">金額清單·確認鎖定</text>
+  <text x="734" y="158" text-anchor="middle" font-size="11" fill="#5a6b85">草稿可重算</text>
+  <text x="734" y="176" text-anchor="middle" font-size="11" fill="#5a6b85">確認即鎖定留痕</text>
+  <text x="734" y="194" text-anchor="middle" font-size="11" fill="#5a6b85">可下鑽賬單行/訂單</text>
+
+  <!-- B5 excel -->
+  <rect x="846" y="110" width="184" height="100" rx="10" fill="#e8f6ec" stroke="#2e8b57" stroke-width="2"/>
+  <text x="938" y="136" text-anchor="middle" font-size="14" font-weight="700" fill="#1d6b3f">Excel 金額清單</text>
+  <text x="938" y="158" text-anchor="middle" font-size="11" fill="#3f7a58">USD / HKD / MOP</text>
+  <text x="938" y="176" text-anchor="middle" font-size="11" fill="#3f7a58">含產品級明細 sheet</text>
+
+  <!-- pipeline arrows -->
+  <line x1="214" y1="160" x2="232" y2="160" stroke="#555" stroke-width="2.5" marker-end="url(#ar)"/>
+  <line x1="418" y1="160" x2="436" y2="160" stroke="#555" stroke-width="2.5" marker-end="url(#ar)"/>
+  <line x1="622" y1="160" x2="640" y2="160" stroke="#555" stroke-width="2.5" marker-end="url(#ar)"/>
+  <line x1="826" y1="160" x2="844" y2="160" stroke="#555" stroke-width="2.5" marker-end="url(#ar)"/>
+
+  <!-- ===== roles row ===== -->
+  <!-- Admin -->
+  <rect x="30" y="300" width="280" height="84" rx="10" fill="#f3eaff" stroke="#7a4fc9" stroke-width="2"/>
+  <text x="170" y="326" text-anchor="middle" font-size="14" font-weight="700" fill="#4a2b86">管理員</text>
+  <text x="170" y="348" text-anchor="middle" font-size="11" fill="#5d4399">配置中心(AK/SK·AI) · 匯率</text>
+  <text x="170" y="366" text-anchor="middle" font-size="11" fill="#5d4399">解鎖 · 審計日誌(只追加)</text>
+
+  <!-- Sales -->
+  <rect x="438" y="300" width="184" height="84" rx="10" fill="#fff6e5" stroke="#c98a2b" stroke-width="2"/>
+  <text x="530" y="326" text-anchor="middle" font-size="14" font-weight="700" fill="#8a5a10">銷售</text>
+  <text x="530" y="348" text-anchor="middle" font-size="11" fill="#9a6a20">錄 SO number + Ratio</text>
+  <text x="530" y="366" text-anchor="middle" font-size="11" fill="#9a6a20">僅本人名下客戶</text>
+
+  <!-- Logistics -->
+  <rect x="642" y="300" width="184" height="84" rx="10" fill="#e5f4fb" stroke="#2b7fc9" stroke-width="2"/>
+  <text x="734" y="326" text-anchor="middle" font-size="14" font-weight="700" fill="#10568a">物流</text>
+  <text x="734" y="348" text-anchor="middle" font-size="11" fill="#20669a">生成草稿 / 核對 / 確認</text>
+  <text x="734" y="366" text-anchor="middle" font-size="11" fill="#20669a">導出 Excel</text>
+
+  <!-- offline charging -->
+  <rect x="846" y="300" width="184" height="84" rx="10" fill="#eef2f7" stroke="#8a97a8" stroke-width="2"/>
+  <text x="938" y="326" text-anchor="middle" font-size="13" font-weight="700" fill="#3a4a63">線下收費</text>
+  <text x="938" y="348" text-anchor="middle" font-size="11" fill="#5a6b85">沿用現有方式</text>
+  <text x="938" y="366" text-anchor="middle" font-size="11" fill="#5a6b85">平台不管收款</text>
+
+  <!-- role arrows -->
+  <path d="M170,300 L170,255 L326,255 L326,214" fill="none" stroke="#3b6ea5" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arB)"/>
+  <line x1="530" y1="300" x2="530" y2="214" stroke="#3b6ea5" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arB)"/>
+  <line x1="734" y1="300" x2="734" y2="214" stroke="#3b6ea5" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arB)"/>
+  <line x1="938" y1="210" x2="938" y2="298" stroke="#555" stroke-width="2.5" marker-end="url(#ar)"/>
+
+  <!-- ===== formula strip ===== -->
+  <rect x="30" y="420" width="1000" height="70" rx="10" fill="#fff" stroke="#D0021B" stroke-width="2"/>
+  <text x="530" y="447" text-anchor="middle" font-size="13" font-weight="700" fill="#D0021B">勾稽：Pretax = Original − Discount − Coupon − SPN</text>
+  <text x="530" y="471" text-anchor="middle" font-size="12" fill="#8a3040">應付 = Σ客戶淨額 × (1+ratio)　｜　全表應付 = Σ消費行 + Σ尾差行 + Σ退款行</text>
+</svg>
