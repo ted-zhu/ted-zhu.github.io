@@ -1,5 +1,5 @@
 ---
-title: Reseller 對賬自動化實戰：用阿里雲 Agency API 把月度對賬從「人工下載」變成一條流水線
+title: 阿里雲reseller對賬自動化實踐
 author: Ted
 date: 2026-10-08
 tags:
@@ -8,10 +8,10 @@ tags:
   - Agency API
   - Reseller
   - 對賬自動化
-summary: 以真實 202607 賬期樣本（53 個 End User、2238 行）為依據，拆解 ACPN 專屬 Agency OpenAPI 的三條數據路徑選型、賬單勾稽規則與三類特殊行處理，並給出 FastAPI + SQLite 單容器對賬系統的工程實現與避坑清單。
+summary: 以真實賬期樣本的字段級驗證為依據，拆解 ACPN 專屬 Agency OpenAPI 的三條數據路徑選型、賬單勾稽規則與三類特殊行處理，並給出 FastAPI + SQLite 單容器對賬系統的工程實現與避坑清單。
 ---
 
-# Reseller 對賬自動化實戰：用阿里雲 Agency API 把月度對賬從「人工下載」變成一條流水線
+# 阿里雲reseller對賬自動化實踐
 
 > 系列：澳門企業上雲實戰 · 第 2 篇
 > 關鍵詞：阿里雲、ACPN、Agency OpenAPI、Reseller、對賬自動化、GetMonthlyBill、SubscriptionBill
@@ -23,9 +23,9 @@ summary: 以真實 202607 賬期樣本（53 個 End User、2238 行）為依據�
 - **上游對賬（成本端）**：核對阿里雲開給我司的夥伴賬單（Partner Statement / Invoice）；
 - **下游對賬（收入端）**：核對每個 End User 的消費明細與應收（Customer Statement / End User Monthly Statement）。
 
-過去這件事完全靠人工：每月登錄 ACPN 控制台（acpn.alibabacloud.com），在 Finance Center 裡篩選賬期、點導出、等異步任務、下載 Excel，再由物流部和採購部人手核對 cost / unit price / discount / special discount。五十多個 End User、兩千多行明細，耗時大且容易錯。
+過去這件事完全靠人工：每月登錄 ACPN 控制台（acpn.alibabacloud.com），在 Finance Center 裡篩選賬期、點導出、等異步任務、下載 Excel，再由物流部和採購部人手核對 cost / unit price / discount / special discount。客戶與明細行數量一多，耗時大且容易錯。
 
-這篇文章記錄我們把這條鏈路徹底自動化的過程：從**發現 ACPN 其實有一套專屬 OpenAPI**，到解剖真實賬單樣本、設計對賬系統、落地工程實現。所有 API 信息來自官方一手來源（API Explorer 元數據 + 官方文檔），並用**真實的 202607 賬期樣本（53 個 End User、127 個產品、2238 行）**做了字段級驗證。
+這篇文章記錄我們把這條鏈路徹底自動化的過程：從**發現 ACPN 其實有一套專屬 OpenAPI**，到解剖真實賬單樣本、設計對賬系統、落地工程實現。所有 API 信息來自官方一手來源（API Explorer 元數據 + 官方文檔），並用一個真實賬期的「End User Monthly Instance StatementV2」樣本做了字段級驗證（文中不出現客戶名稱與業務金額）。
 
 ## 二、關鍵發現：ACPN 有專屬 OpenAPI——Agency 產品
 
@@ -48,7 +48,7 @@ summary: 以真實 202607 賬期樣本（53 個 End User、2238 行）為依據�
 | `BillOwner` | `1`=主賬號（夥伴自身，對應 Partner Statement）；`2`=子賬號（End User） |
 | `BillType` | 枚舉見下 |
 
-`BillType` 枚舉中与對賬最相關的：
+`BillType` 枚舉中與對賬最相關的：
 
 | 值 | 含義 |
 |----|------|
@@ -85,23 +85,23 @@ summary: 以真實 202607 賬期樣本（53 個 End User、2238 行）為依據�
 
 我們的路線：**一期用 B 快速替掉人工下載**（1–2 天即可上線），**二期切 A** 拿計費項級明細，C 作為單價核對的備援。
 
-## 三、解剖真實賬單：202607 樣本告訴我們的五件事
+## 三、解剖真實賬單樣本：結構決定規則
 
-樣本：`End User Monthly Instance StatementV2 202607.xlsx`，單 sheet、2238 行、**24 列**（Consume Time、Billing Cycle、User ID/Name/Account、Bill Source、Order Type、Charge Type、Billing Type、Product Code/Name、Instance ID/Name/Configuration/Tag、Region、Original Cost、SPN Deducted Price、SPN ID、Discount、Discount(%)、Coupon Deduct、Pretax Cost(Before Round Down Discount)、Currency）。
-
-全月匯總（USD）：原價 331,370.99 / 折扣 24,574.40 / 優惠券 6,472.52 / 應付 300,321.65。
+樣本為單 sheet、**24 列**的實例級明細：Consume Time、Billing Cycle、User ID/Name/Account、Bill Source、Order Type、Charge Type、Billing Type、Product Code/Name、Instance ID/Name/Configuration/Tag、Region、Original Cost、SPN Deducted Price、SPN ID、Discount、Discount(%)、Coupon Deduct、Pretax Cost(Before Round Down Discount)、Currency。逐行分析後，有五個結論直接決定了對賬系統的設計。
 
 **1. 沒有單價列。** 實例級對賬單是匯總視角，無 unit price / usage。要核單價必須走計費項級數據（SubscriptionBill 或 `IsBillingItem=true`）。
 
-**2. Special discount 沒有獨立字段。** 所有折扣合併進 `Discount(%)`（樣本折扣率 0.01~0.6992，即各客戶的協議折扣）。正確做法是商務側維護「客戶×產品×協議折扣率」基準表，與賬單 `Discount(%)` 逐行比對。
+**2. Special discount 沒有獨立字段。** 所有折扣合併進 `Discount(%)`，該列實際值就是各客戶協議折扣的落地結果。正確做法是商務側維護「客戶×產品×協議折扣率」基準表，與賬單 `Discount(%)` 逐行比對。
 
-**3. 三類特殊行必須分別處理：**
+**3. 明細行分三類，必須分別處理：**
 
-| 行類型 | 行數 | 特徵 |
+| 行類型 | 特徵 | 處理 |
 |--------|------|------|
-| Consume | 1992 | 正常消費，逐行滿足 `Pretax = Original − Discount − Coupon − SPN` |
-| Rounding-Down | 235 | Order Type=OTHERS；Original/Discount 均為 0；Pretax 為小數尾差負值，**精度最高 10 位小數**（如 −0.3955929096）；全月合計 ≈ −2.43 |
-| Refund / DOWNGRADE | 11 | Original 為負、Discount=0、Pretax=Original；**退款不回填原折扣結構**，直接淨額紅沖 |
+| Consume（消費行） | 逐行滿足 `Pretax = Original − Discount − Coupon − SPN` | 參與折扣率比對與匯總 |
+| Rounding-Down（尾差行） | Order Type=OTHERS；Original/Discount 均為 0；Pretax 為小數尾差負值，**精度最高 10 位小數** | 單獨歸集，解釋勾稽差額 |
+| Refund / DOWNGRADE（退款行） | Original 為負、Discount=0、Pretax=Original；**退款不回填原折扣結構** | 淨額紅沖，不參與折扣率比對 |
+
+![賬單三類行與勾稽關係](/images/reseller-reconciliation-rows.png)
 
 **4. 勾稽公式嚴格成立：**
 
@@ -110,25 +110,19 @@ Pretax(消費行) = Original − Discount − Coupon − SPN
 全表應付 = Σ消費行Pretax + ΣRounding-Down尾差 + Σ退款行(負值)
 ```
 
-樣本中 `Σ(Original−Discount−Coupon−SPN) = 300,324.08`，`Σ(Pretax) = 300,321.65`，差額 2.43 完全由尾差行解釋。這條公式就是入庫校驗的依據。
+實測中「Σ(Original−Discount−Coupon−SPN)」與「Σ(Pretax)」之間的差額，**完全且僅由尾差行解釋**。這條等式就是入庫校驗的依據：不平即代表數據有問題，必須告警而不是帶病入庫。
 
-**5. 解析器必須容忍：** 10 位小數、負值金額、空配置列、用戶名脫敏（如 `edp@lusobank.******`）。以及**一個客戶多個 UID** 是常態（樣本中 Wynn 3 個、AMCM 3 個、MGM 2 個），需要「客戶 ↔ UID」歸組表。
+**5. 解析器必須容忍：** 10 位小數、負值金額、空配置列、用戶名脫敏（形如 `xxx@****.******`）。以及**一個客戶多個 UID** 是常態（樣本中普遍存在同一客戶掛多個 UID），需要「客戶 ↔ UID」歸組表。
 
 ## 四、對賬系統設計：從賬單到「客戶應付金額清單」
 
 ![對賬自動化架構圖](/images/reseller-reconciliation-arch.png)
 
-> 配圖說明：上圖為數據管線與角色分工（2160×1040）；向量版見 `/images/reseller-reconciliation-arch.svg`。
+> 配圖說明：上圖為數據管線與角色分工；向量版見 `/images/reseller-reconciliation-arch.svg`。
 
-澳門沒有發票概念，平台不出發票、不管收款，產出物是**經物流部確認的金額清單**（頁面查看 + Excel 導出）。確認後的核心流程：
+澳門沒有發票概念，平台不出發票、不管收款，產出物是**經物流部確認的金額清單**（頁面查看 + Excel 導出）。確認後的月度作業流程：
 
-```
-① 自動：每月 8 號起定時從 Agency API 拉取賬單 → 解析 → 勾稽校驗 → 入庫（失敗重試）
-② 銷售：登錄系統，為名下客戶錄入 SO number + Ratio（可選 AI 錄入產品級費率）
-③ 物流：點「生成金額草稿」→ 系統按客戶匯總賬單淨額 × ratio → 草稿清單
-④ 物流：核對後直接確認（無審批）→ 最終金額清單，可選匯率換算 HKD/MOP
-⑤ 物流：導出 Excel，沿用現有方式向客戶收費
-```
+![月度對賬作業流程](/images/reseller-reconciliation-flow.png)
 
 ### 4.1 金額計算引擎（核心邏輯）
 
@@ -216,7 +210,7 @@ for r in body:
 diff = (tot_orig - tot_disc - tot_coupon - tot_spn) - tot_pretax
 ```
 
-**金額全鏈路禁用 float**：入庫保留全精度（樣本最高 10 位小數），展示/導出才按 2 位小數四捨五入。用 float 累加兩千行尾差，誤差會直接吃掉對賬的可信度。
+**金額全鏈路禁用 float**：入庫保留全精度（樣本最高 10 位小數），展示/導出才按 2 位小數四捨五入。用 float 累加幾千行尾差，誤差會直接吃掉對賬的可信度。
 
 ### 5.3 憑證安全：配置中心 AES-256-GCM 加密入庫
 
@@ -246,7 +240,3 @@ AK/SK 與 AI 服務配置不落地明文：以應用主密鑰（`APP_SECRET` 派
 1. **先找 API 再談自動化**：ACPN 的 Agency 產品覆蓋了控制台絕大多數能力，很多人不知道它的存在；
 2. **用真實樣本定義規則**：勾稽公式、三類特殊行、精度要求，全部來自對真實賬單的逐行驗證，而非文檔推測；
 3. **把合規與留痕做進底層**：無審批流程不等於無控制——鎖定、解鎖留痕、只追加審計，就是財務數據的底線。
-
----
-
-*下一篇預告：《澳門中小企上雲成本優化實戰》——RI / Saving Plan 怎麼買、多幣種計費怎麼管，把對賬工具沉澱的成本可視化能力變成省錢動作。*

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="520" viewBox="0 0 1000 520" font-family="'Heiti TC','Noto Sans SC','Hiragino Sans GB','PingFang TC',sans-serif">
+  <defs>
+    <marker id="f1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#555"/>
+    </marker>
+    <marker id="f2" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#c94b4b"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="520" fill="#f7f9fc"/>
+  <text x="500" y="34" text-anchor="middle" font-size="22" font-weight="700" fill="#1a2b45">月度對賬作業流程</text>
+
+  <!-- step 1 -->
+  <rect x="380" y="56" width="320" height="60" rx="10" fill="#ffe9d6" stroke="#F5A623" stroke-width="2"/>
+  <text x="540" y="82" text-anchor="middle" font-size="14" font-weight="700" fill="#B34700">① 自動拉數（每月 8 號起）</text>
+  <text x="540" y="102" text-anchor="middle" font-size="11" fill="#8a5a2a">GetMonthlyBill → 解析 → 勾稽校驗 → 入庫（失敗重試）</text>
+
+  <!-- step 2 -->
+  <rect x="380" y="146" width="320" height="60" rx="10" fill="#fff6e5" stroke="#c98a2b" stroke-width="2"/>
+  <text x="540" y="172" text-anchor="middle" font-size="14" font-weight="700" fill="#8a5a10">② 銷售錄單</text>
+  <text x="540" y="192" text-anchor="middle" font-size="11" fill="#9a6a20">SO number + Ratio（可選 AI 產品級費率）</text>
+
+  <!-- step 3 -->
+  <rect x="380" y="236" width="320" height="60" rx="10" fill="#e5f4fb" stroke="#2b7fc9" stroke-width="2"/>
+  <text x="540" y="262" text-anchor="middle" font-size="14" font-weight="700" fill="#10568a">③ 物流生成金額草稿</text>
+  <text x="540" y="282" text-anchor="middle" font-size="11" fill="#20669a">客戶淨額 × ratio；草稿可重算覆蓋</text>
+
+  <!-- decision -->
+  <polygon points="540,318 620,352 540,386 460,352" fill="#ffffff" stroke="#7a4fc9" stroke-width="2"/>
+  <text x="540" y="357" text-anchor="middle" font-size="13" font-weight="700" fill="#4a2b86">核對通過?</text>
+
+  <!-- step 4 -->
+  <rect x="380" y="408" width="320" height="56" rx="10" fill="#e8f6ec" stroke="#2e8b57" stroke-width="2"/>
+  <text x="540" y="432" text-anchor="middle" font-size="14" font-weight="700" fill="#1d6b3f">④ 確認鎖定（留痕）</text>
+  <text x="540" y="450" text-anchor="middle" font-size="11" fill="#3f7a58">確認人/時間/匯率/訂單版本；可選 HKD/MOP</text>
+
+  <!-- step 5 -->
+  <rect x="380" y="486" width="320" height="26" rx="8" fill="#eef2f7" stroke="#8a97a8" stroke-width="2"/>
+  <text x="540" y="504" text-anchor="middle" font-size="12" font-weight="700" fill="#3a4a63">⑤ 導出 Excel → 沿用現有方式收費</text>
+
+  <!-- vertical arrows -->
+  <line x1="540" y1="116" x2="540" y2="144" stroke="#555" stroke-width="2" marker-end="url(#f1)"/>
+  <line x1="540" y1="206" x2="540" y2="234" stroke="#555" stroke-width="2" marker-end="url(#f1)"/>
+  <line x1="540" y1="296" x2="540" y2="316" stroke="#555" stroke-width="2" marker-end="url(#f1)"/>
+  <line x1="540" y1="386" x2="540" y2="406" stroke="#555" stroke-width="2" marker-end="url(#f1)"/>
+  <text x="556" y="400" font-size="11" fill="#2e8b57">是</text>
+  <line x1="540" y1="464" x2="540" y2="484" stroke="#555" stroke-width="2" marker-end="url(#f1)"/>
+
+  <!-- loop back (no) -->
+  <path d="M460,352 L300,352 L300,176 L378,176" fill="none" stroke="#c94b4b" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#f2)"/>
+  <text x="312" y="344" font-size="11" fill="#c94b4b">否：補訂單 / 歸組後重算</text>
+</svg>
