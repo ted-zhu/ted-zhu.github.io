@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="1010" viewBox="0 0 2000 1010" font-family="'Heiti TC','Noto Sans SC','Hiragino Sans GB','PingFang TC',sans-serif">
+  <rect x="0" y="0" width="2000" height="1010" fill="#F2F5F9"/>
+  <text x="1000" y="46" text-anchor="middle" font-size="34" font-weight="bold" fill="#16324F">一次完整 LLM 請求 Flow（內外調用統一入口）</text>
+
+  <!-- lane headers -->
+  <rect x="180" y="90" width="320" height="70" rx="12" fill="#E3F2FD" stroke="#1565C0" stroke-width="3"/>
+  <text x="340" y="133" text-anchor="middle" font-size="24" font-weight="bold" fill="#1565C0">業務系統（Consumer）</text>
+  <rect x="640" y="90" width="420" height="70" rx="12" fill="#FFFFFF" stroke="#1F4E79" stroke-width="3"/>
+  <text x="850" y="133" text-anchor="middle" font-size="24" font-weight="bold" fill="#1F4E79">Higress AI Gateway</text>
+  <rect x="1180" y="90" width="240" height="70" rx="12" fill="#ECEFF1" stroke="#546E7A" stroke-width="3"/>
+  <text x="1300" y="133" text-anchor="middle" font-size="24" font-weight="bold" fill="#37474F">Redis</text>
+  <rect x="1540" y="90" width="340" height="70" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="3"/>
+  <text x="1710" y="133" text-anchor="middle" font-size="24" font-weight="bold" fill="#2E7D32">百煉 / 備用上游</text>
+
+  <!-- lifelines -->
+  <line x1="340" y1="160" x2="340" y2="960" stroke="#90A4AE" stroke-width="2" stroke-dasharray="6 6"/>
+  <line x1="850" y1="160" x2="850" y2="960" stroke="#90A4AE" stroke-width="2" stroke-dasharray="6 6"/>
+  <line x1="1300" y1="160" x2="1300" y2="960" stroke="#90A4AE" stroke-width="2" stroke-dasharray="6 6"/>
+  <line x1="1710" y1="160" x2="1710" y2="960" stroke="#90A4AE" stroke-width="2" stroke-dasharray="6 6"/>
+
+  <!-- 1 -->
+  <line x1="340" y1="220" x2="832" y2="220" stroke="#1565C0" stroke-width="3"/>
+  <polygon points="850,220 832,211 832,229" fill="#1565C0"/>
+  <text x="360" y="208" font-size="19" fill="#1565C0">① POST /v1/chat/completions（Bearer consumer-key，SSE）</text>
+
+  <!-- 2 note -->
+  <rect x="660" y="252" width="380" height="52" rx="8" fill="#FFF8E1" stroke="#F0C36D" stroke-width="2"/>
+  <text x="850" y="284" text-anchor="middle" font-size="18" fill="#6B4E00">② key-auth 識別消費者；ai-data-masking 脫敏</text>
+
+  <!-- 3 -->
+  <line x1="850" y1="340" x2="1282" y2="340" stroke="#EF6C00" stroke-width="3"/>
+  <polygon points="1300,340 1282,331 1282,349" fill="#EF6C00"/>
+  <text x="870" y="328" font-size="19" fill="#EF6C00">③ token 配額檢查（ai-token-ratelimit）</text>
+  <line x1="1300" y1="384" x2="868" y2="384" stroke="#5A6B7B" stroke-width="2" stroke-dasharray="7 5"/>
+  <polygon points="850,384 868,375 868,393" fill="#5A6B7B"/>
+  <text x="900" y="408" font-size="17" fill="#5A6B7B">計數結果：放行 / 429 拒絕</text>
+
+  <!-- 4 -->
+  <line x1="850" y1="450" x2="1282" y2="450" stroke="#00695C" stroke-width="3"/>
+  <polygon points="1300,450 1282,441 1282,459" fill="#00695C"/>
+  <text x="870" y="438" font-size="19" fill="#00695C">④ 語義緩存查詢（ai-cache）</text>
+  <line x1="1300" y1="494" x2="868" y2="494" stroke="#5A6B7B" stroke-width="2" stroke-dasharray="7 5"/>
+  <polygon points="850,494 868,485 868,503" fill="#5A6B7B"/>
+  <text x="900" y="518" font-size="17" fill="#5A6B7B">命中 / 未命中</text>
+
+  <!-- 4a hit -->
+  <line x1="850" y1="560" x2="358" y2="560" stroke="#2E7D32" stroke-width="3" stroke-dasharray="8 5"/>
+  <polygon points="340,560 358,551 358,569" fill="#2E7D32"/>
+  <text x="400" y="548" font-size="19" fill="#2E7D32">④a 命中：直接返回緩存響應（不回源、不計模型 token）</text>
+
+  <!-- 5 note -->
+  <rect x="660" y="592" width="380" height="52" rx="8" fill="#FFF8E1" stroke="#F0C36D" stroke-width="2"/>
+  <text x="850" y="624" text-anchor="middle" font-size="18" fill="#6B4E00">⑤ 未命中：ai-proxy 協議轉換、Key 池選取</text>
+
+  <!-- 6 -->
+  <line x1="850" y1="680" x2="1692" y2="680" stroke="#1565C0" stroke-width="3"/>
+  <polygon points="1710,680 1692,671 1692,689" fill="#1565C0"/>
+  <text x="880" y="668" font-size="19" fill="#1565C0">⑥ 轉發請求（OpenAI 契約 → 供應商原生）</text>
+  <line x1="1710" y1="724" x2="868" y2="724" stroke="#5A6B7B" stroke-width="2" stroke-dasharray="7 5"/>
+  <polygon points="850,724 868,715 868,733" fill="#5A6B7B"/>
+  <text x="900" y="748" font-size="17" fill="#5A6B7B">⑦ SSE 流式響應逐塊回傳</text>
+
+  <!-- 8 note -->
+  <rect x="660" y="772" width="380" height="52" rx="8" fill="#FFF8E1" stroke="#F0C36D" stroke-width="2"/>
+  <text x="850" y="804" text-anchor="middle" font-size="18" fill="#6B4E00">⑧ ai-statistics 計 token / 延遲，寫指標與審計</text>
+
+  <!-- 9 -->
+  <line x1="850" y1="860" x2="358" y2="860" stroke="#1565C0" stroke-width="3" stroke-dasharray="8 5"/>
+  <polygon points="340,860 358,851 358,869" fill="#1565C0"/>
+  <text x="400" y="848" font-size="19" fill="#1565C0">⑨ 流式返回業務系統</text>
+
+  <!-- 10 fallback -->
+  <line x1="850" y1="920" x2="1692" y2="920" stroke="#D0021B" stroke-width="3" stroke-dasharray="8 5"/>
+  <polygon points="1710,920 1692,911 1692,929" fill="#D0021B"/>
+  <text x="880" y="908" font-size="19" fill="#D0021B">⑩ 超時 / 5xx：fallback 備用供應商或備用模型，重走 ⑥–⑨</text>
+</svg>
