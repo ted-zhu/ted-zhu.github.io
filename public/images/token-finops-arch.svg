@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="780" viewBox="0 0 2000 780" font-family="'Heiti TC','Noto Sans SC','Hiragino Sans GB','PingFang TC',sans-serif">
+  <rect x="0" y="0" width="2000" height="780" fill="#F2F5F9"/>
+  <text x="1000" y="48" text-anchor="middle" font-size="34" font-weight="bold" fill="#16324F">AI Token 成本治理閉環架構（計量 → 歸因 → 預算 → 優化）</text>
+
+  <!-- sources -->
+  <rect x="140" y="120" width="420" height="110" rx="12" fill="#E3F2FD" stroke="#1565C0" stroke-width="3"/>
+  <text x="170" y="160" font-size="22" font-weight="bold" fill="#1565C0">Higress ai-statistics（請求級 · 實時）</text>
+  <text x="170" y="196" font-size="17" fill="#1565C0">按 consumer：入/出 token · 緩存命中 · 延遲</text>
+  <rect x="140" y="260" width="420" height="110" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="3"/>
+  <text x="170" y="300" font-size="22" font-weight="bold" fill="#2E7D32">百煉平台計量（折扣口徑）</text>
+  <text x="170" y="336" font-size="17" fill="#2E7D32">輸入/輸出計價 · Batch 50% · 顯式緩存命中 10%</text>
+  <rect x="140" y="400" width="420" height="110" rx="12" fill="#ECEFF1" stroke="#546E7A" stroke-width="3"/>
+  <text x="170" y="440" font-size="22" font-weight="bold" fill="#37474F">BssOpenApi 賬單（財務口徑 · 終版）</text>
+  <text x="170" y="476" font-size="17" fill="#546E7A">ListPrice/Usage · 次月 3 日後終版</text>
+
+  <!-- source arrows -->
+  <line x1="560" y1="175" x2="620" y2="175" stroke="#5A6B7B" stroke-width="3"/>
+  <polygon points="638,175 620,166 620,184" fill="#5A6B7B"/>
+  <line x1="560" y1="315" x2="620" y2="315" stroke="#5A6B7B" stroke-width="3"/>
+  <polygon points="638,315 620,306 620,324" fill="#5A6B7B"/>
+  <line x1="560" y1="455" x2="620" y2="455" stroke="#5A6B7B" stroke-width="3"/>
+  <polygon points="638,455 620,446 620,464" fill="#5A6B7B"/>
+
+  <!-- ledger -->
+  <rect x="640" y="120" width="380" height="390" rx="14" fill="#FFFFFF" stroke="#1F4E79" stroke-width="4"/>
+  <text x="670" y="162" font-size="24" font-weight="bold" fill="#1F4E79">採集與成本賬本</text>
+  <text x="670" y="192" font-size="16" fill="#5A6B7B">ETL：Decimal · 統一賬期 · 截斷標記</text>
+  <rect x="670" y="210" width="320" height="70" rx="8" fill="#E3F2FD" stroke="#1565C0" stroke-width="2"/>
+  <text x="690" y="240" font-size="17" fill="#1565C0">事實表：每請求 token</text>
+  <text x="690" y="266" font-size="15" fill="#1565C0">consumer / 路由 / 模型 / 入 / 出 / 緩存命中</text>
+  <rect x="670" y="300" width="320" height="70" rx="8" fill="#FFF3E0" stroke="#EF6C00" stroke-width="2"/>
+  <text x="690" y="330" font-size="17" fill="#EF6C00">維表一：consumer → 部門/場景</text>
+  <text x="690" y="356" font-size="15" fill="#EF6C00">待歸組阻止月報出數</text>
+  <rect x="670" y="390" width="320" height="70" rx="8" fill="#FFF3E0" stroke="#EF6C00" stroke-width="2"/>
+  <text x="690" y="420" font-size="17" fill="#EF6C00">維表二：模型 → 單價版本</text>
+  <text x="690" y="446" font-size="15" fill="#EF6C00">每月以賬單 ListPrice 回校</text>
+  <rect x="670" y="472" width="320" height="26" rx="6" fill="#FFEBEE" stroke="#D0021B" stroke-width="2"/>
+  <text x="830" y="491" text-anchor="middle" font-size="15" fill="#D0021B">網關 ≈ 平台 ≈ 賬單，差額不可解釋即告警</text>
+
+  <!-- ledger -> attribution -->
+  <line x1="1020" y1="195" x2="1080" y2="195" stroke="#6B4E00" stroke-width="3"/>
+  <polygon points="1098,195 1080,186 1080,204" fill="#6B4E00"/>
+
+  <!-- attribution -->
+  <rect x="1100" y="120" width="380" height="150" rx="12" fill="#FFF8E1" stroke="#F0C36D" stroke-width="3"/>
+  <text x="1130" y="162" font-size="24" font-weight="bold" fill="#6B4E00">歸因引擎</text>
+  <text x="1130" y="198" font-size="16" fill="#6B4E00">部門（預算）· 場景（占比/單次成本）</text>
+  <text x="1130" y="228" font-size="16" fill="#6B4E00">模型檔位（flash/plus/max 分布）</text>
+
+  <!-- control points -->
+  <rect x="1560" y="120" width="360" height="200" rx="12" fill="#F3E5F5" stroke="#6A1B9A" stroke-width="3"/>
+  <text x="1590" y="162" font-size="22" font-weight="bold" fill="#6A1B9A">Higress 控制點（優化下發）</text>
+  <text x="1590" y="198" font-size="16" fill="#6A1B9A">ratelimit / quota：配額下調</text>
+  <text x="1590" y="228" font-size="16" fill="#6A1B9A">ai-cache 語義緩存 · 分層路由下移</text>
+  <text x="1590" y="258" font-size="16" fill="#6A1B9A">ai-history 裁剪 · JSON 輸出治理</text>
+
+  <!-- control -> batch -->
+  <line x1="1740" y1="320" x2="1740" y2="342" stroke="#2E7D32" stroke-width="3"/>
+  <polygon points="1740,358 1731,340 1749,340" fill="#2E7D32"/>
+
+  <!-- batch -->
+  <rect x="1560" y="360" width="360" height="110" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="3"/>
+  <text x="1590" y="400" font-size="22" font-weight="bold" fill="#2E7D32">離線任務 Batch（50% 單價）</text>
+  <text x="1590" y="436" font-size="17" fill="#2E7D32">評測 / 質檢 / 報表：時移執行</text>
+  <text x="1590" y="460" font-size="16" fill="#2E7D32">僅成功請求計費</text>
+
+  <!-- cadence -->
+  <rect x="1560" y="510" width="360" height="160" rx="12" fill="#ECEFF1" stroke="#546E7A" stroke-width="3"/>
+  <text x="1590" y="550" font-size="22" font-weight="bold" fill="#37474F">月度節奏</text>
+  <text x="1590" y="586" font-size="17" fill="#546E7A">1 日封賬 · 3 日終版賬單勾稽</text>
+  <text x="1590" y="616" font-size="17" fill="#546E7A">8 日歸因月報 + 預算評審</text>
+  <text x="1590" y="646" font-size="17" fill="#546E7A">優化台賬驅動下月清單</text>
+
+  <!-- attribution -> outputs rail -->
+  <line x1="1290" y1="270" x2="1290" y2="520" stroke="#6B4E00" stroke-width="3"/>
+  <line x1="350" y1="520" x2="1290" y2="520" stroke="#6B4E00" stroke-width="3"/>
+  <line x1="350" y1="520" x2="350" y2="542" stroke="#6B4E00" stroke-width="3"/>
+  <polygon points="350,558 341,540 359,540" fill="#6B4E00"/>
+  <line x1="830" y1="520" x2="830" y2="542" stroke="#6B4E00" stroke-width="3"/>
+  <polygon points="830,558 821,540 839,540" fill="#6B4E00"/>
+  <line x1="1290" y1="520" x2="1290" y2="542" stroke="#6B4E00" stroke-width="3"/>
+  <polygon points="1290,558 1281,540 1299,540" fill="#6B4E00"/>
+
+  <!-- outputs -->
+  <rect x="140" y="560" width="420" height="110" rx="12" fill="#FFEBEE" stroke="#D0021B" stroke-width="3"/>
+  <text x="170" y="600" font-size="22" font-weight="bold" fill="#D0021B">實時預算告警</text>
+  <text x="170" y="636" font-size="16" fill="#D0021B">run-rate / 環比 / P99 / 命中率 → 分級降級預案</text>
+  <rect x="640" y="560" width="380" height="110" rx="12" fill="#E3F2FD" stroke="#1565C0" stroke-width="3"/>
+  <text x="670" y="600" font-size="22" font-weight="bold" fill="#1565C0">歸因月報</text>
+  <text x="670" y="636" font-size="17" fill="#1565C0">三視圖 + 單價回校 + 勾稽報告</text>
+  <rect x="1100" y="560" width="380" height="110" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="3"/>
+  <text x="1130" y="600" font-size="22" font-weight="bold" fill="#2E7D32">優化台賬</text>
+  <text x="1130" y="636" font-size="16" fill="#2E7D32">每槓桿前後 7 天對比，無差額不入台賬</text>
+
+  <!-- cadence -> ledger outputs (dashed) -->
+  <line x1="1560" y1="615" x2="1500" y2="615" stroke="#546E7A" stroke-width="3" stroke-dasharray="8 5"/>
+  <polygon points="1482,615 1500,606 1500,624" fill="#546E7A"/>
+
+  <!-- closed loop (dashed): ledger -> batch & control points -->
+  <line x1="1290" y1="670" x2="1290" y2="700" stroke="#6A1B9A" stroke-width="3" stroke-dasharray="8 5"/>
+  <line x1="1290" y1="700" x2="1960" y2="700" stroke="#6A1B9A" stroke-width="3" stroke-dasharray="8 5"/>
+  <line x1="1740" y1="700" x2="1740" y2="488" stroke="#6A1B9A" stroke-width="3" stroke-dasharray="8 5"/>
+  <polygon points="1740,472 1731,490 1749,490" fill="#6A1B9A"/>
+  <line x1="1960" y1="700" x2="1960" y2="220" stroke="#6A1B9A" stroke-width="3" stroke-dasharray="8 5"/>
+  <line x1="1960" y1="220" x2="1938" y2="220" stroke="#6A1B9A" stroke-width="3" stroke-dasharray="8 5"/>
+  <polygon points="1920,220 1938,211 1938,229" fill="#6A1B9A"/>
+  <text x="1310" y="692" font-size="16" fill="#6A1B9A">優化動作閉環下發</text>
+</svg>
