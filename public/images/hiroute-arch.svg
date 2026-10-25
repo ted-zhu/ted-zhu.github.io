@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="880" viewBox="0 0 2000 880">
+  <g font-family="'Heiti TC','Noto Sans SC','Hiragino Sans GB','PingFang TC',sans-serif">
+    <rect x="0" y="0" width="2000" height="880" fill="#F4F6F8"/>
+
+    <!-- Agents -->
+    <rect x="60" y="300" width="300" height="280" rx="14" fill="#E3F2FD" stroke="#1565C0" stroke-width="3"/>
+    <text x="80" y="342" font-size="22" font-weight="bold" fill="#1565C0">AI 編程 Agent</text>
+    <text x="80" y="386" font-size="17" fill="#37474F">· Codex</text>
+    <text x="80" y="422" font-size="17" fill="#37474F">· Claude Code</text>
+    <text x="80" y="458" font-size="17" fill="#37474F">· Qoder</text>
+    <text x="80" y="494" font-size="17" fill="#37474F">· DeepSeek Harness</text>
+    <text x="80" y="540" font-size="14" fill="#546E7A">流量指向本地網關</text>
+
+    <!-- Jev -->
+    <rect x="430" y="40" width="620" height="70" rx="12" fill="#EDE7F6" stroke="#4527A0" stroke-width="3"/>
+    <text x="450" y="83" font-size="20" font-weight="bold" fill="#4527A0">Jev 決策服務（接百煉 / TypeSafe 端點）</text>
+
+    <!-- Gateway -->
+    <rect x="430" y="140" width="620" height="600" rx="14" fill="#FFF8E1" stroke="#EF6C00" stroke-width="3"/>
+    <text x="450" y="180" font-size="22" font-weight="bold" fill="#E65100">HiRoute 本地網關（Rust）</text>
+
+    <rect x="450" y="200" width="580" height="150" rx="10" fill="#FFFFFF" stroke="#EF6C00" stroke-width="2"/>
+    <text x="470" y="232" font-size="20" font-weight="bold" fill="#E65100">雙指標決策</text>
+    <text x="470" y="266" font-size="16" fill="#37474F">複雜度：「簡單」概率超閾值 → 經濟池</text>
+    <text x="470" y="294" font-size="16" fill="#37474F">勝任度：上階段質量低於下限 → 主力接管</text>
+    <text x="470" y="326" font-size="14" fill="#8D6E63">勝任度擋冒險降本 · 複雜度給降本機會</text>
+
+    <rect x="450" y="370" width="280" height="150" rx="10" fill="#FFFFFF" stroke="#EF6C00" stroke-width="2"/>
+    <text x="470" y="402" font-size="19" font-weight="bold" fill="#E65100">路由策略引擎</text>
+    <text x="470" y="432" font-size="15" fill="#37474F">固定模型 · 按難度分流</text>
+    <text x="470" y="458" font-size="15" fill="#37474F">自定義分支 · 免費優先</text>
+    <text x="470" y="488" font-size="13" fill="#78909C">可分層疊加</text>
+
+    <rect x="750" y="370" width="280" height="150" rx="10" fill="#FFFFFF" stroke="#EF6C00" stroke-width="2"/>
+    <text x="770" y="402" font-size="19" font-weight="bold" fill="#E65100">ContextHold</text>
+    <text x="770" y="432" font-size="15" fill="#37474F">同輪同模型保前綴</text>
+    <text x="770" y="458" font-size="15" fill="#37474F">復用供應商緩存</text>
+    <text x="770" y="488" font-size="13" fill="#78909C">新輸入/重建才重評</text>
+
+    <rect x="450" y="540" width="280" height="150" rx="10" fill="#FFFFFF" stroke="#EF6C00" stroke-width="2"/>
+    <text x="470" y="572" font-size="19" font-weight="bold" fill="#E65100">候補隊列</text>
+    <text x="470" y="602" font-size="15" fill="#37474F">有序降級 · 耗盡即停</text>
+    <text x="470" y="628" font-size="15" fill="#37474F">不暗中替換模型</text>
+    <text x="470" y="658" font-size="13" fill="#78909C">不改變分類與評分</text>
+
+    <rect x="750" y="540" width="280" height="150" rx="10" fill="#FFFFFF" stroke="#EF6C00" stroke-width="2"/>
+    <text x="770" y="572" font-size="19" font-weight="bold" fill="#E65100">逐輪審計</text>
+    <text x="770" y="602" font-size="15" fill="#37474F">模型·token·費用·分類</text>
+    <text x="770" y="628" font-size="15" fill="#37474F">工具輸出·階段勝任度</text>
+    <text x="770" y="658" font-size="13" fill="#78909C">會話歷史＋性能看板</text>
+
+    <!-- Pools -->
+    <rect x="1180" y="180" width="380" height="140" rx="12" fill="#E3F2FD" stroke="#1565C0" stroke-width="3"/>
+    <text x="1200" y="214" font-size="19" font-weight="bold" fill="#1565C0">訂閱憑證池（疑難題·接管）</text>
+    <text x="1200" y="248" font-size="15" fill="#37474F">Codex / Claude Code 訂閱</text>
+    <text x="1200" y="280" font-size="15" fill="#37474F">額度留給疑難與接管</text>
+
+    <rect x="1180" y="360" width="380" height="140" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="3"/>
+    <text x="1200" y="394" font-size="19" font-weight="bold" fill="#2E7D32">經濟 API 池（簡單任務）</text>
+    <text x="1200" y="428" font-size="15" fill="#37474F">百煉 Qwen-Flash 等</text>
+    <text x="1200" y="460" font-size="15" fill="#37474F">承接簡單與例行任務</text>
+
+    <rect x="1180" y="540" width="380" height="140" rx="12" fill="#F3E5F5" stroke="#6A1B9A" stroke-width="3"/>
+    <text x="1200" y="574" font-size="19" font-weight="bold" fill="#6A1B9A">私有與合規端點</text>
+    <text x="1200" y="608" font-size="15" fill="#37474F">OpenRouter / TypeSafe</text>
+    <text x="1200" y="640" font-size="15" fill="#37474F">自定義兼容 · 私有集群</text>
+
+    <!-- Dashboard / ledger -->
+    <rect x="1180" y="740" width="740" height="100" rx="12" fill="#ECEFF1" stroke="#455A64" stroke-width="3"/>
+    <text x="1200" y="776" font-size="20" font-weight="bold" fill="#37474F">審計看板與成本賬本</text>
+    <text x="1200" y="810" font-size="15" fill="#546E7A">逐輪記錄可接入 Token 成本事實表 · 與網關/賬單勾稽</text>
+
+    <!-- Solid arrows -->
+    <line x1="360" y1="440" x2="418" y2="440" stroke="#546E7A" stroke-width="3"/>
+    <polygon points="418,433 418,447 430,440" fill="#546E7A"/>
+    <line x1="1050" y1="250" x2="1168" y2="250" stroke="#546E7A" stroke-width="3"/>
+    <polygon points="1168,243 1168,257 1180,250" fill="#546E7A"/>
+    <line x1="1050" y1="430" x2="1168" y2="430" stroke="#546E7A" stroke-width="3"/>
+    <polygon points="1168,423 1168,437 1180,430" fill="#546E7A"/>
+    <line x1="1050" y1="610" x2="1168" y2="610" stroke="#546E7A" stroke-width="3"/>
+    <polygon points="1168,603 1168,617 1180,610" fill="#546E7A"/>
+
+    <!-- Dashed: Jev -> dual metric -->
+    <line x1="740" y1="110" x2="740" y2="188" stroke="#7B1FA2" stroke-width="3" stroke-dasharray="8 6"/>
+    <polygon points="733,188 747,188 740,200" fill="#7B1FA2"/>
+
+    <!-- Dashed: fallback economy -> subscription -->
+    <line x1="1560" y1="360" x2="1560" y2="332" stroke="#7B1FA2" stroke-width="3" stroke-dasharray="8 6"/>
+    <polygon points="1553,332 1567,332 1560,320" fill="#7B1FA2"/>
+    <text x="1575" y="346" font-size="14" fill="#7B1FA2">候補有序降級</text>
+
+    <!-- Dashed: audit -> ledger -->
+    <path d="M 890 690 V 790 H 1168" fill="none" stroke="#7B1FA2" stroke-width="3" stroke-dasharray="8 6"/>
+    <polygon points="1168,783 1168,797 1180,790" fill="#7B1FA2"/>
+    <text x="900" y="780" font-size="14" fill="#7B1FA2">逐輪計量入賬</text>
+  </g>
+</svg>
