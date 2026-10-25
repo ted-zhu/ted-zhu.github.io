@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="920" viewBox="0 0 2000 920" font-family="'Heiti TC','Noto Sans SC','Hiragino Sans GB','PingFang TC',sans-serif">
+  <rect x="0" y="0" width="2000" height="920" fill="#F2F5F9"/>
+  <text x="1000" y="48" text-anchor="middle" font-size="34" font-weight="bold" fill="#16324F">澳門多語智能客服參考架構（百煉國際站 · 新加坡地域）</text>
+
+  <!-- users -->
+  <rect x="140" y="100" width="400" height="80" rx="12" fill="#E3F2FD" stroke="#1565C0" stroke-width="3"/>
+  <text x="340" y="148" text-anchor="middle" font-size="23" font-weight="bold" fill="#1565C0">粵語 / 繁中用戶（旅客 · 市民）</text>
+  <rect x="600" y="100" width="400" height="80" rx="12" fill="#E3F2FD" stroke="#1565C0" stroke-width="3"/>
+  <text x="800" y="148" text-anchor="middle" font-size="23" font-weight="bold" fill="#1565C0">葡語用戶（歐洲葡語 pt-PT）</text>
+  <rect x="1060" y="100" width="400" height="80" rx="12" fill="#E3F2FD" stroke="#1565C0" stroke-width="3"/>
+  <text x="1260" y="148" text-anchor="middle" font-size="23" font-weight="bold" fill="#1565C0">英語用戶 · 內部員工</text>
+
+  <!-- console -->
+  <rect x="1560" y="100" width="360" height="110" rx="12" fill="#FFF8E1" stroke="#F0C36D" stroke-width="3"/>
+  <text x="1740" y="142" text-anchor="middle" font-size="22" font-weight="bold" fill="#6B4E00">百煉控制台（新加坡）</text>
+  <text x="1740" y="176" text-anchor="middle" font-size="17" fill="#6B4E00">知識庫 / 應用 / 模型與 Key 配置</text>
+
+  <!-- user arrows -->
+  <line x1="340" y1="180" x2="340" y2="262" stroke="#1565C0" stroke-width="3"/>
+  <polygon points="340,278 331,260 349,260" fill="#1565C0"/>
+  <line x1="800" y1="180" x2="800" y2="262" stroke="#1565C0" stroke-width="3"/>
+  <polygon points="800,278 791,260 809,260" fill="#1565C0"/>
+  <line x1="1260" y1="180" x2="1260" y2="262" stroke="#1565C0" stroke-width="3"/>
+  <polygon points="1260,278 1251,260 1269,260" fill="#1565C0"/>
+  <text x="830" y="230" font-size="18" fill="#1565C0">統一入口（多語混合輸入）</text>
+
+  <!-- gateway -->
+  <rect x="140" y="280" width="1320" height="170" rx="14" fill="#FFFFFF" stroke="#1F4E79" stroke-width="4"/>
+  <text x="170" y="322" font-size="25" font-weight="bold" fill="#1F4E79">自有網關層（語言工程中樞）</text>
+  <rect x="170" y="350" width="220" height="56" rx="10" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+  <text x="280" y="385" text-anchor="middle" font-size="18" fill="#2E7D32">語言識別 qwen-flash</text>
+  <rect x="410" y="350" width="150" height="56" rx="10" fill="#E8F5E9" stroke="#2E7D32" stroke-width="2"/>
+  <text x="485" y="385" text-anchor="middle" font-size="18" fill="#2E7D32">意圖分類</text>
+  <rect x="580" y="350" width="140" height="56" rx="10" fill="#E3F2FD" stroke="#1565C0" stroke-width="2"/>
+  <text x="650" y="385" text-anchor="middle" font-size="18" fill="#1565C0">分層路由</text>
+  <rect x="740" y="350" width="140" height="56" rx="10" fill="#E0F2F1" stroke="#00695C" stroke-width="2"/>
+  <text x="810" y="385" text-anchor="middle" font-size="18" fill="#00695C">語義緩存</text>
+  <rect x="900" y="350" width="230" height="56" rx="10" fill="#FCE4EC" stroke="#C2185B" stroke-width="2"/>
+  <text x="1015" y="385" text-anchor="middle" font-size="18" fill="#C2185B">出口語言檢測校驗</text>
+  <rect x="1150" y="350" width="170" height="56" rx="10" fill="#FCE4EC" stroke="#C2185B" stroke-width="2"/>
+  <text x="1235" y="385" text-anchor="middle" font-size="18" fill="#C2185B">模板槽位填充</text>
+  <line x1="390" y1="378" x2="406" y2="378" stroke="#5A6B7B" stroke-width="2"/>
+  <line x1="560" y1="378" x2="576" y2="378" stroke="#5A6B7B" stroke-width="2"/>
+  <line x1="720" y1="378" x2="736" y2="378" stroke="#5A6B7B" stroke-width="2"/>
+  <line x1="880" y1="378" x2="896" y2="378" stroke="#5A6B7B" stroke-width="2"/>
+  <line x1="1130" y1="378" x2="1146" y2="378" stroke="#5A6B7B" stroke-width="2"/>
+  <text x="170" y="436" font-size="17" fill="#5A6B7B">路由：flash 識別分類 → plus 主對話 → 升級切 max；知識類走智能體應用、翻譯類走 qwen-mt；對外文案走模板</text>
+
+  <!-- gateway -> model layer / agent app -->
+  <line x1="450" y1="450" x2="450" y2="542" stroke="#1565C0" stroke-width="3"/>
+  <polygon points="450,558 441,540 459,540" fill="#1565C0"/>
+  <text x="470" y="505" font-size="17" fill="#1565C0">分層路由 / 翻譯請求</text>
+  <line x1="1010" y1="450" x2="1010" y2="542" stroke="#1565C0" stroke-width="3"/>
+  <polygon points="1010,558 1001,540 1019,540" fill="#1565C0"/>
+  <text x="1030" y="505" font-size="17" fill="#1565C0">知識類問題</text>
+
+  <!-- model layer -->
+  <rect x="140" y="560" width="620" height="200" rx="12" fill="#E8F5E9" stroke="#2E7D32" stroke-width="3"/>
+  <text x="170" y="600" font-size="22" font-weight="bold" fill="#2E7D32">百煉模型層 · OpenAI 兼容端點</text>
+  <rect x="170" y="620" width="180" height="48" rx="8" fill="#FFFFFF" stroke="#2E7D32" stroke-width="2"/>
+  <text x="260" y="651" text-anchor="middle" font-size="18" fill="#2E7D32">qwen-flash</text>
+  <rect x="370" y="620" width="180" height="48" rx="8" fill="#FFFFFF" stroke="#2E7D32" stroke-width="2"/>
+  <text x="460" y="651" text-anchor="middle" font-size="18" fill="#2E7D32">qwen-plus</text>
+  <rect x="570" y="620" width="170" height="48" rx="8" fill="#FFFFFF" stroke="#2E7D32" stroke-width="2"/>
+  <text x="655" y="651" text-anchor="middle" font-size="18" fill="#2E7D32">qwen3-max</text>
+  <rect x="170" y="684" width="180" height="48" rx="8" fill="#FFFFFF" stroke="#2E7D32" stroke-width="2"/>
+  <text x="260" y="715" text-anchor="middle" font-size="18" fill="#2E7D32">qwen-mt-plus</text>
+  <rect x="370" y="684" width="180" height="48" rx="8" fill="#FFFFFF" stroke="#2E7D32" stroke-width="2"/>
+  <text x="460" y="715" text-anchor="middle" font-size="18" fill="#2E7D32">qwen-vl-max</text>
+  <rect x="570" y="684" width="170" height="48" rx="8" fill="#FFFFFF" stroke="#2E7D32" stroke-width="2"/>
+  <text x="655" y="715" text-anchor="middle" font-size="18" fill="#2E7D32">qwen-omni</text>
+
+  <!-- agent app -->
+  <rect x="800" y="560" width="420" height="200" rx="12" fill="#E3F2FD" stroke="#1565C0" stroke-width="3"/>
+  <text x="830" y="600" font-size="22" font-weight="bold" fill="#1565C0">智能體應用（RAG 入口）</text>
+  <text x="830" y="640" font-size="16" fill="#1565C0">/api/v1/apps/{appId}/completion</text>
+  <text x="830" y="672" font-size="17" fill="#1565C0">檢索策略在控制台迭代</text>
+  <text x="830" y="704" font-size="17" fill="#1565C0">對前端暴露單一入口</text>
+
+  <!-- knowledge bases -->
+  <rect x="1260" y="560" width="440" height="200" rx="12" fill="#E0F2F1" stroke="#00695C" stroke-width="3"/>
+  <text x="1290" y="600" font-size="22" font-weight="bold" fill="#00695C">知識庫：分語言建庫</text>
+  <rect x="1290" y="620" width="120" height="56" rx="8" fill="#FFFFFF" stroke="#00695C" stroke-width="2"/>
+  <text x="1350" y="655" text-anchor="middle" font-size="18" fill="#00695C">繁中子庫</text>
+  <rect x="1430" y="620" width="120" height="56" rx="8" fill="#FFFFFF" stroke="#00695C" stroke-width="2"/>
+  <text x="1490" y="655" text-anchor="middle" font-size="18" fill="#00695C">葡語子庫</text>
+  <rect x="1570" y="620" width="120" height="56" rx="8" fill="#FFFFFF" stroke="#00695C" stroke-width="2"/>
+  <text x="1630" y="655" text-anchor="middle" font-size="18" fill="#00695C">英語子庫</text>
+  <text x="1290" y="712" font-size="16" fill="#00695C">按條款切片 · 按識別語言檢索 · 檢索不到說不知道</text>
+
+  <!-- agent -> kb -->
+  <line x1="1220" y1="660" x2="1240" y2="660" stroke="#00695C" stroke-width="3"/>
+  <polygon points="1258,660 1240,651 1240,669" fill="#00695C"/>
+
+  <!-- terms box -> model layer -->
+  <line x1="450" y1="800" x2="450" y2="778" stroke="#C2185B" stroke-width="3"/>
+  <polygon points="450,762 441,780 459,780" fill="#C2185B"/>
+  <rect x="140" y="800" width="620" height="80" rx="12" fill="#FCE4EC" stroke="#C2185B" stroke-width="3"/>
+  <text x="170" y="832" font-size="21" font-weight="bold" fill="#C2185B">術語表與翻譯記憶</text>
+  <text x="170" y="862" font-size="17" fill="#C2185B">terms / tm_list / domains → 注入 qwen-mt 與 system prompt</text>
+
+  <!-- audit & eval -->
+  <rect x="800" y="800" width="900" height="80" rx="12" fill="#ECEFF1" stroke="#546E7A" stroke-width="3"/>
+  <text x="830" y="832" font-size="21" font-weight="bold" fill="#37474F">審計與質量閉環</text>
+  <text x="830" y="862" font-size="17" fill="#546E7A">對話審計日誌 · 三語評測集回歸 · 母語者抽檢反例庫</text>
+
+  <!-- gateway -> audit (dashed) -->
+  <line x1="1400" y1="450" x2="1400" y2="480" stroke="#546E7A" stroke-width="3" stroke-dasharray="8 5"/>
+  <line x1="1400" y1="480" x2="1800" y2="480" stroke="#546E7A" stroke-width="3" stroke-dasharray="8 5"/>
+  <line x1="1800" y1="480" x2="1800" y2="840" stroke="#546E7A" stroke-width="3" stroke-dasharray="8 5"/>
+  <line x1="1800" y1="840" x2="1722" y2="840" stroke="#546E7A" stroke-width="3" stroke-dasharray="8 5"/>
+  <polygon points="1702,840 1720,831 1720,849" fill="#546E7A"/>
+  <text x="1420" y="470" font-size="16" fill="#546E7A">全量對話落審計</text>
+
+  <!-- eval gate feedback (dashed) -->
+  <line x1="1250" y1="800" x2="1250" y2="780" stroke="#546E7A" stroke-width="3" stroke-dasharray="8 5"/>
+  <line x1="1250" y1="780" x2="1010" y2="780" stroke="#546E7A" stroke-width="3" stroke-dasharray="8 5"/>
+  <line x1="1010" y1="780" x2="1010" y2="778" stroke="#546E7A" stroke-width="3" stroke-dasharray="8 5"/>
+  <polygon points="1010,762 1001,780 1019,780" fill="#546E7A"/>
+  <text x="995" y="795" text-anchor="end" font-size="16" fill="#546E7A">評測回歸通過才上線</text>
+</svg>
